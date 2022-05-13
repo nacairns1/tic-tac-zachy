@@ -1,0 +1,19 @@
+{
+  "name": "tic-tac-zachy",
+  "version": "1.0.0",
+  "description": "game of tic-tac-toe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nacairns1/tic-tac-zachy.git"
+  },
+  "author": "Noah C, Zach C",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nacairns1/tic-tac-zachy/issues"
+  },
+  "homepage": "https://github.com/nacairns1/tic-tac-zachy#readme"
+}
