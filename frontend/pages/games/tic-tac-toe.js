@@ -29,16 +29,7 @@ const TicTacToe = () => {
                 <button className={`btn btn-square ${playerSymbol === "X" && "btn-primary"}`} onClick={() => { playerSymbolHandler("X") }}>X</button>
                 <button className={`btn btn-square ${playerSymbol === "O" && "btn-primary"}`} onClick={() => { playerSymbolHandler("O") }}>O</button>
             </div>
-            <Grid>
-                <GameSection id="00" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="01" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="02" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="10" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="11" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="12" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="20" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="21" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
-                <GameSection id="22" playerSymbol={playerSymbol} onSelect={ playerSymbolSwitch} />
+            <Grid onSelect={playerSymbolSwitch} playerSymbol={playerSymbol}>
             </Grid>
             <footer className="text-center">
                 <Link href="/">

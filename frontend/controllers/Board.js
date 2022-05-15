@@ -193,7 +193,6 @@ class Board {
     }
 }
 
-const TTT = new Board(3,3);
 
 
-module.exports = {TTT};
+module.exports = {Board};
