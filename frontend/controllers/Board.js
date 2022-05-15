@@ -14,61 +14,80 @@ class Board {
     #isSolvedO;
 
     constructor(height, width) {
-        this.#height = height;
-        this.#width = width;
-        this.#isSolvedX = false;
-        this.#isSolvedO = false;
+        this.height = height;
+        this.width = width;
+        this.isSolvedX = false;
+        this.isSolvedO = false;
 
-        this.#board = new Array(height);
+        const board_new_height = new Array(height);
+        const board_new_width = new Array(width);
+        this.board = board_new_height;
         for(var i = 0; i < height; i++) {
-            this.#board(i) = new Array(width);
+            this.board[i] = board_new_width;
         }
 
     }
 
     get height() {
-        return this.#height;
+        return this.height;
+    }
+
+    set height (height) {
+        
     }
 
     get width() {
-        return this.#width;
+        return this.width;
+    }
+
+    set width (width) {
+
     }
 
     get isSolvedX() {
-        return this.#isSolvedX;
+        return this.isSolvedX;
+    }
+
+    set isSolvedX(isSolvedX){
+
     }
 
     get isSolvedO() {
-        return this.#isSolvedO;
+        return this.isSolvedO;
     }
 
+    set isSolvedO(isSolvedO) {
+        
+    }
+
+
     isEmpty(row, col) {
-        if(this.#board.at(row).at(col) == 0) {
+        if(this.board[row][col] == 0) {
             return true;
         }
         return false;
     }
 
     isX(row, col) {
-        if(this.#board.at(row).at(col) == 1) {
+        if(this.board[row][col] == 1) {
             return true;
         }
         return false; 
     }
 
     isO(row, col) {
-        if(this.#board.at(row).at(col) == 2) {
+        if(this.board[row][col] == 2) {
             return true;
         }
         return false;
     }
 
     toggleEmpty(row, col) {
-        this.#board.at(row).at(col) = 0;
+        this.board[row][col] = 0;
     }
 
     toggleX(row, col) {
-        this.#board.at(row).at(col) = 1; 
+        this.board[row][col] = 1; 
 
         // **** CHECK IF ISSOLVED for Xs
         if(row == col) {    // We are on a diagonal square, so check the diagonals. IE{(0,0), (1,1), (2,2)}
@@ -84,7 +103,7 @@ class Board {
                 }
             }
             if(allXFlag) {
-                #isSolvedX = true;
+                isSolvedX = true;
             }
         }
         else {      // We are not on a diagonal so check current row or column. Ex: If row = 2, check that entire row
@@ -98,7 +117,7 @@ class Board {
                 }
             }
             if(allXFlag) {
-                #isSolvedX = true; //This row is filled with all X's.
+                isSolvedX = true; //This row is filled with all X's.
             }
 
             //Now check the column.
@@ -111,13 +130,13 @@ class Board {
                 }
             }
             if(allXFlag = true) {
-                #isSolvedX = true; //This column is filled with all X's.
+                isSolvedX = true; //This column is filled with all X's.
             }
         }
     }
 
     toggleO(row, col) {
-        this.#board.at(row).at(col) = 2;
+        this.board[row][col] = 2;
     
         // **** CHECK ISSOLVED for O's 
         if(row == col) {    // We are on a diagonal square, so check the diagonals. IE{(0,0), (1,1), (2,2)}
@@ -133,7 +152,7 @@ class Board {
                 }
             }
             if(allXFlag) {
-                #isSolvedO = true;
+                isSolvedO = true;
             }
         }
         else {      // We are not on a diagonal so check current row or column. Ex: If row = 2, check that entire row
@@ -147,7 +166,7 @@ class Board {
                 }
             }
             if(allXFlag) {
-                #isSolvedO = true; //This row is filled with all O's.
+                isSolvedO = true; //This row is filled with all O's.
             }
 
             //Now check the column.
@@ -160,7 +179,7 @@ class Board {
                 }
             }
             if(allXFlag = true) {
-                #isSolvedO = true; //This column is filled with all O's.
+                isSolvedO = true; //This column is filled with all O's.
             }
         }
     }
@@ -174,3 +193,7 @@ class Board {
     }
 }
 
+const TTT = new Board(3,3);
+
+
+module.exports = {TTT};

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import Link from "next/link";
-import GameSection from "../../components/game-section";
-import Grid from "../../components/grid";
+import GameSection from "../../components/GameSection";
+import Grid from "../../components/Grid";
 
 const TicTacToe = () => {
     const [playerSymbol, setPlayerSymbol] = useState('X');
