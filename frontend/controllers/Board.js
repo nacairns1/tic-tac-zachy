@@ -67,6 +67,7 @@ class Board {
 
 
     isEmpty(row, col) {
+
         console.log(`checking isEmpty for ${row} and ${col}.`);
 
         if (this.board[row][col] === 0) {
@@ -95,7 +96,7 @@ class Board {
         //check row for all X's
         for (let i = 0; i < this.width; i++) {
             if (!this.isX(row, i)) {
-                console.log(`NOT X piece found at ${row} and ${this.isO}`);
+                console.log(`NOT X piece found at ${row} and ${i}`);
                 allXFlag = false;
                 break;
             };
@@ -103,7 +104,7 @@ class Board {
         }
 
         console.log(`X solved after row check? ${allXFlag}`);
-        if(allXFlag) return this.isSolvedX = true;
+        if (allXFlag) return this.isSolvedX = true;
 
         //Now check the column.
         for (let i = 0; i < this.height; i++) {
@@ -115,66 +116,102 @@ class Board {
             allXFlag = true;
         }
         console.log(`X solved after col check? ${allXFlag}`);
-        if(allXFlag) return this.isSolvedX = true;
+        if (allXFlag) return this.isSolvedX = true;
 
 
         //diagonal check
-        if ( row + col % 2 === 0) {
-            
+        console.log(`Checking at ${row} and ${col} : ${row===1 && col ===1}` );
+        if ((row + col )% 2 === 0 ) {
+            console.log('Diagonal check started correctly');
+            for (let i = 0; i < 3; i++) {
+                if (!this.isX(i,i)) {
+                    allXFlag = false;
+                    break;
+                }
+                allXFlag = true;
+            }
+            console.log(`X solved after first diagonal check? ${allXFlag}`);
+            if (allXFlag) return this.isSolvedX = true;
 
+            //check second diagonal
+            for (let i = 0; i < 3; i++) {
+                if (!this.isX(2 - i,i) ) {
+                    allXFlag = false;
+                    break;
+                }
+                allXFlag = true;
+            }
+
+            console.log(`X solved after second diagonal check? ${allXFlag}`);
+            if (allXFlag) return this.isSolvedX = true;
         }
-
     }
 
     toggleO(row, col) {
         this.board[row][col] = 2;
-        let allOFlag = true;
+        let allOFlag = false;
 
-        // **** CHECK IF ISSOLVED for Os
-        if (row === col) {    // We are on a diagonal square, so check the diagonals. IE{(0,0), (1,1), (2,2)}
-            // We know the current square at (row,col) is an O, so check either Up Diag or Down Diag
-            // Hard coding this for 3x3 grid (classical) for now to test.
-            for (var x = 0; x < this.height; x++) {
-                if (!this.isO(x, x)) {
-                    allOFlag = false;
-                    break;
-                };
-                console.log(`seeing O piece at ${row} and ${x}`);
-            }
-        }
-
-        // We are not on a diagonal so check current row or column. Ex: If row = 2, check that entire row
-
-        for (var x = 0; x < this.width; x++) {
-            if (!this.isO(x, x)) {
+        //check row for all O's
+        for (let i = 0; i < this.width; i++) {
+            if (!this.isO(row, i)) {
+                console.log(`NOT O piece found at ${row} and ${i}`);
                 allOFlag = false;
                 break;
             };
-            console.log(`seeing O piece at ${row} and ${x}`);
-
+            allOFlag = true;
         }
+
+        console.log(`O solved after row check? ${allOFlag}`);
+        if (allOFlag) return this.isSolvedO = true;
 
         //Now check the column.
-        for (var x = 0; x < this.height; x++) {
-            if (!this.isO(x, x)) {
+        for (let i = 0; i < this.height; i++) {
+            if (!this.isO(i, col)) {
+                console.log(`NOT O piece found at ${i} and ${col}`);
                 allOFlag = false;
                 break;
             };
-            console.log(`seeing O piece at ${row} and ${x}`);
-
+            allOFlag = true;
         }
+        console.log(`O solved after col check? ${allOFlag}`);
+        if (allOFlag) return this.isSolvedO = true;
 
-        if (allOFlag = true) {
-            this.isSolvedO = true; //This column is filled with all X's.
+
+        //diagonal check
+        console.log(`Checking at ${row} and ${col} : ${row===1 && col ===1}` );
+        if ((row + col )% 2 === 0 ) {
+            console.log('Diagonal check started correctly');
+            for (let i = 0; i < 3; i++) {
+                if (!this.isO(i,i)) {
+                    allOFlag = false;
+                    break;
+                }
+                allOFlag = true;
+            }
+            console.log(`O solved after first diagonal check? ${allOFlag}`);
+            if (allOFlag) return this.isSolvedO = true;
+
+            //check second diagonal
+            for (let i = 0; i < 3; i++) {
+                if (!this.isO(2 - i,i) ) {
+                    allOFlag = false;
+                    break;
+                }
+                allOFlag = true;
+            }
+
+            console.log(`O solved after second diagonal check? ${allOFlag}`);
+            if (allOFlag) return this.isSolvedO = true;
         }
-
     }
 
     clear() {
-        this.board = new Array(
+        this.board = new Array
+        (
             [0, 0, 0],
             [0, 0, 0],
-            [0, 0, 0]);
+            [0, 0, 0]
+        );
     }
 }
 

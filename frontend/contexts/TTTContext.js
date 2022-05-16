@@ -1,12 +1,13 @@
 import { createContext, useContext, useReducer } from 'react';
 import { Board } from "../controllers/Board.js";
+import Router from 'next/router';
+
 
 const TTTContext = createContext();
 
 
 const gameStateReducer = (state, action) => {
     const { row, col, piece } = action;
-    console.log(state.board);
     switch (action.type) {
         case "SELECT_X":
             if (!state.board.isEmpty(row, col)) return { ...state };
@@ -23,6 +24,7 @@ const gameStateReducer = (state, action) => {
             return { ...state};
         case "NEW_GAME":
             state.board.clear();
+            state.playerPiece = " ";
             console.log("New Game Started");
             return { ...state };
         case "PLAYER_BUTTON":
