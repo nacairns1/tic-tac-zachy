@@ -1,28 +1,46 @@
-import { createContext, useContext, useReducer} from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import { Board } from "../controllers/Board.js";
 
 const TTTContext = createContext();
-const TTTBoard = new Board(3);
+
 
 const gameStateReducer = (state, action) => {
+    const { row, col, piece } = action;
+    console.log(state.board);
     switch (action.type) {
-        case "select_x":
-            return {...state};
-        case "select_o":
-            return {...state};
-        case "new_game":
-            return {...state};
+        case "SELECT_X":
+            if (!state.board.isEmpty(row, col)) return { ...state };
+            state.board.toggleX(row, col);
+            if (state.board.isSolvedX) state.x_victory=true;
+            state.playerPiece = "O";
+            return { ...state};
+        case "SELECT_O":
+            if (!state.board.isEmpty(row, col)) return { ...state };
+            console.log(`dispatch seen for O on ${row} and ${col}. Curr value: ${state.board.board[row][col]}`);
+            state.board.toggleO(row, col);
+            if (state.board.isSolvedO) state.o_victory=true;
+            state.playerPiece = "X";
+            return { ...state};
+        case "NEW_GAME":
+            state.board.clear();
+            console.log("New Game Started");
+            return { ...state };
+        case "PLAYER_BUTTON":
+            console.log(`switching pieces... to ${piece}`);
+            return { ...state, playerPiece: piece };
         default:
-            return {...state};
+            return { ...state };
     }
 }
 
 
-const TTTWrapper = ({ children }) => {    
-    const [gameState, dispatch] = useReducer(gameStateReducer, {board: TTTBoard, victory: false, playerPiece:"DEFAULT"});
-    const gameContextValue = () => {gameState, dispatch};
+const TTTWrapper = ({ children }) => {
+    const [gameState, dispatch] = useReducer(gameStateReducer, { board: new Board(3, 3), x_victory: false, o_victory: false, playerPiece: " " });
+    const gameContextValue = () => {
+        return { gameState, dispatch }
+    };
     return (
-        <TTTContext.Provider value={gameContextValue}>
+        <TTTContext.Provider value={gameContextValue()}>
             {children}
         </TTTContext.Provider>
     );

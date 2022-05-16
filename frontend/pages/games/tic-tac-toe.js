@@ -1,36 +1,41 @@
-import { useState } from 'react';
+import { useState, useContext, useCallback } from 'react';
+
+import {useTTTContext} from '../../contexts/TTTContext';
 
 import Link from "next/link";
 import GameSection from "../../components/GameSection";
 import Grid from "../../components/Grid";
 
 const TicTacToe = () => {
-    const [playerSymbol, setPlayerSymbol] = useState('X');
-
-    const playerSymbolHandler = (symbol) => {
-        setPlayerSymbol(symbol);
+    
+    const {gameState, dispatch} = useTTTContext();
+    const { board, playerPiece } = gameState;
+    const clickHandler = (piece) => {
+        dispatch({type: `PLAYER_BUTTON`, piece: piece});
+        
     }
 
-    const playerSymbolSwitch = () => {
-        switch (playerSymbol) {
-            case "X":
-                setPlayerSymbol("O");
-                break;
-            case "O":
-                setPlayerSymbol("X");
-                break;
-        }
-    }
+    //#region 
+    // const playerSymbolSwitch = () => {
+    //     switch (playerSymbol) {
+    //         case "X":
+    //             setPlayerSymbol("O");
+    //             break;
+    //         case "O":
+    //             setPlayerSymbol("X");
+    //             break;
+    //     }
+    // }
+    //#endregion
 
     return (
         <div className="container mx-auto my-20 w-96 h-96 flex-col justify-center align-middle content-center items-center">
             <h1 className="text-center text-6xl">Tic-Tac-Toe</h1>
             <div id="player-buttons" className="w-fit container mx-auto flex gap-4 py-5">
-                <button className={`btn btn-square ${playerSymbol === "X" && "btn-primary"}`} onClick={() => { playerSymbolHandler("X") }}>X</button>
-                <button className={`btn btn-square ${playerSymbol === "O" && "btn-primary"}`} onClick={() => { playerSymbolHandler("O") }}>O</button>
+                <button className={`btn btn-square ${playerPiece === "X" && "btn-primary"}`} onClick={() => { clickHandler('X')}}>X</button>
+                <button className={`btn btn-square ${playerPiece === "O" && "btn-primary"}`} onClick={() => { clickHandler('O') }}>O</button>
             </div>
-            <Grid onSelect={playerSymbolSwitch} playerSymbol={playerSymbol}>
-            </Grid>
+            <Grid />
             <footer className="text-center">
                 <Link href="/">
                     <a className="text-cyan-500 hover:text-cyan-900">

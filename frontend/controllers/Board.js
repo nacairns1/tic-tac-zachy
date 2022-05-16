@@ -7,79 +7,81 @@
 // **This prototype does not do any parameter checking.
 
 class Board {
-    #height;
-    #width;
-    #board;
-    #isSolvedX;
-    #isSolvedO;
+
 
     constructor(height, width) {
-        this.height = height;
-        this.width = width;
+        this.height = 3;
+        this.width = 3;
         this.isSolvedX = false;
         this.isSolvedO = false;
-
-        const board_new_height = new Array(height);
-        const board_new_width = new Array(width);
-        this.board = board_new_height;
-        for(var i = 0; i < height; i++) {
-            this.board[i] = board_new_width;
-        }
-
-    }
-
-    get height() {
-        return this.height;
-    }
-
-    set height (height) {
-        
-    }
-
-    get width() {
-        return this.width;
-    }
-
-    set width (width) {
+        this.board = new Array
+            (
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            );
 
     }
 
-    get isSolvedX() {
-        return this.isSolvedX;
-    }
+    //#region Getters and Setters to potentially reintroduce
+    // get height() {
+    //     return height;
+    // }
 
-    set isSolvedX(isSolvedX){
+    // set height (height) {
 
-    }
+    // }
 
-    get isSolvedO() {
-        return this.isSolvedO;
-    }
+    // get width() {
+    //     return width;
+    // }
 
-    set isSolvedO(isSolvedO) {
-        
-    }
+    // set width (width) {
+
+    // }
+
+    // get isSolvedX() {
+    //     return isSolvedX;
+    // }
+
+    // set isSolvedX(isSolvedX){
+
+    // }
+
+    // get isSolvedO() {
+    //     return isSolvedO;
+    // }
+
+    // set isSolvedO(isSolvedO) {
+
+    // }
+
+    // get board() {
+    //     return board;
+    // }
+
+    // set board(board) {
+
+    // }
+    //#endregion
 
 
     isEmpty(row, col) {
-        if(this.board[row][col] == 0) {
+        console.log(`checking isEmpty for ${row} and ${col}.`);
+
+        if (this.board[row][col] === 0) {
             return true;
         }
         return false;
     }
 
     isX(row, col) {
-        if(this.board[row][col] == 1) {
-            return true;
-        }
-        return false; 
+        return (this.board[row][col] === 1);
     }
 
     isO(row, col) {
-        if(this.board[row][col] == 2) {
-            return true;
-        }
-        return false;
+        return (this.board[row][col] === 2);
+
     }
 
     toggleEmpty(row, col) {
@@ -87,112 +89,95 @@ class Board {
     }
 
     toggleX(row, col) {
-        this.board[row][col] = 1; 
+        this.board[row][col] = 1;
+        let allXFlag = false;
 
-        // **** CHECK IF ISSOLVED for Xs
-        if(row == col) {    // We are on a diagonal square, so check the diagonals. IE{(0,0), (1,1), (2,2)}
-            // We know the current square at (row,col) is an X, so check either Up Diag or Down Diag
-            // Hard coding this for 3x3 grid (classical) for now to test.
-            var allXFlag = false;
-            for(var x = 0; x < height; x++) {
-                if(isX(x, x)) {
-                    allXFlag = true;
-                }
-                else {
-                    allXFlag = false;
-                }
-            }
-            if(allXFlag) {
-                isSolvedX = true;
-            }
+        //check row for all X's
+        for (let i = 0; i < this.width; i++) {
+            if (!this.isX(row, i)) {
+                console.log(`NOT X piece found at ${row} and ${this.isO}`);
+                allXFlag = false;
+                break;
+            };
+            allXFlag = true;
         }
-        else {      // We are not on a diagonal so check current row or column. Ex: If row = 2, check that entire row
-            var allXFlag = false;
-            for(var x = 0; x < width; x++) {
-                if(isX(row, x)) {
-                    allXFlag = true;
-                }
-                else {
-                    allXFlag = false;
-                }
-            }
-            if(allXFlag) {
-                isSolvedX = true; //This row is filled with all X's.
-            }
 
-            //Now check the column.
-            for(var x = 0; x < height; x++) {
-                if(isX(x, col)) {
-                    allXFlag = true;
-                }
-                else {
-                    allXFlag = false;
-                }
-            }
-            if(allXFlag = true) {
-                isSolvedX = true; //This column is filled with all X's.
-            }
+        console.log(`X solved after row check? ${allXFlag}`);
+        if(allXFlag) return this.isSolvedX = true;
+
+        //Now check the column.
+        for (let i = 0; i < this.height; i++) {
+            if (!this.isX(i, col)) {
+                console.log(`NOT X piece found at ${i} and ${col}`);
+                allXFlag = false;
+                break;
+            };
+            allXFlag = true;
         }
+        console.log(`X solved after col check? ${allXFlag}`);
+        if(allXFlag) return this.isSolvedX = true;
+
+
+        //diagonal check
+        if ( row + col % 2 === 0) {
+            
+
+        }
+
     }
 
     toggleO(row, col) {
         this.board[row][col] = 2;
-    
-        // **** CHECK ISSOLVED for O's 
-        if(row == col) {    // We are on a diagonal square, so check the diagonals. IE{(0,0), (1,1), (2,2)}
-            // We know the current square at (row,col) is an X, so check either Up Diag or Down Diag
-            // Hard coding this for 3x3 grid (classical) for now to test.
-            var allOFlag = false;
-            for(var x = 0; x < height; x++) {
-                if(isO(x, x)) {
-                    allOFlag = true;
-                }
-                else {
-                    allOFlag = false;
-                }
-            }
-            if(allXFlag) {
-                isSolvedO = true;
-            }
-        }
-        else {      // We are not on a diagonal so check current row or column. Ex: If row = 2, check that entire row
-            var allOFlag = false;
-            for(var x = 0; x < width; x++) {
-                if(isO(row, x)) {
-                    allOFlag = true;
-                }
-                else {
-                    allOFlag = false;
-                }
-            }
-            if(allXFlag) {
-                isSolvedO = true; //This row is filled with all O's.
-            }
+        let allOFlag = true;
 
-            //Now check the column.
-            for(var x = 0; x < height; x++) {
-                if(isO(x, col)) {
-                    allOFlag = true;
-                }
-                else {
+        // **** CHECK IF ISSOLVED for Os
+        if (row === col) {    // We are on a diagonal square, so check the diagonals. IE{(0,0), (1,1), (2,2)}
+            // We know the current square at (row,col) is an O, so check either Up Diag or Down Diag
+            // Hard coding this for 3x3 grid (classical) for now to test.
+            for (var x = 0; x < this.height; x++) {
+                if (!this.isO(x, x)) {
                     allOFlag = false;
-                }
-            }
-            if(allXFlag = true) {
-                isSolvedO = true; //This column is filled with all O's.
+                    break;
+                };
+                console.log(`seeing O piece at ${row} and ${x}`);
             }
         }
+
+        // We are not on a diagonal so check current row or column. Ex: If row = 2, check that entire row
+
+        for (var x = 0; x < this.width; x++) {
+            if (!this.isO(x, x)) {
+                allOFlag = false;
+                break;
+            };
+            console.log(`seeing O piece at ${row} and ${x}`);
+
+        }
+
+        //Now check the column.
+        for (var x = 0; x < this.height; x++) {
+            if (!this.isO(x, x)) {
+                allOFlag = false;
+                break;
+            };
+            console.log(`seeing O piece at ${row} and ${x}`);
+
+        }
+
+        if (allOFlag = true) {
+            this.isSolvedO = true; //This column is filled with all X's.
+        }
+
     }
 
     clear() {
-        for(var i = 0; i < height; i++) {
-            for(var j = 0; j < width; j++) {
-                toggleEmpty(i, j);
-            }
-        }
+        this.board = new Array(
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]);
     }
 }
 
 
 
-module.exports = {Board};
+module.exports = { Board };

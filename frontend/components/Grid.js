@@ -7,29 +7,23 @@ import GameSection from "./GameSection";
 
 const Grid = (props) => {
     const {gameState, dispatch} = useTTTContext();
-    
-
-    const { playerSymbol, onSelect } = props;
-
-
-    console.log(gameState);
 
     return (
         <>
         <div className="grid grid-rows-3 grid-cols-3 gap-4 mx-auto h-5/6 py-5">
-            <GameSection id="00" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="01" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="02" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="10" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="11" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="12" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="20" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="21" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
-            <GameSection id="22" playerSymbol={playerSymbol} onSelect={()=> {onSelect()}} />
+            <GameSection id="00" row="0" col="0" />
+            <GameSection id="01" row="0" col="1" />
+            <GameSection id="02" row="0" col="2" />
+            <GameSection id="10" row="1" col="0" />
+            <GameSection id="11" row="1" col="1" />
+            <GameSection id="12" row="1" col="2" />
+            <GameSection id="20" row="2" col="0" />
+            <GameSection id="21" row="2" col="1" />
+            <GameSection id="22" row="2" col="2" />
         </div>
 
 
-        <button className="btn btn-warning">NEW GAME</button>
+        <button className="btn btn-warning" onClick={()=>{dispatch({type: 'NEW_GAME'})}}>NEW GAME</button>
         </>
     )
 }
