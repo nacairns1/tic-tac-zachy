@@ -17,15 +17,15 @@ const gameStateReducer = (state, action) => {
             return { ...state};
         case "SELECT_O":
             if (!state.board.isEmpty(row, col)) return { ...state };
-            console.log(`dispatch seen for O on ${row} and ${col}. Curr value: ${state.board.board[row][col]}`);
             state.board.toggleO(row, col);
             if (state.board.isSolvedO) state.o_victory=true;
             state.playerPiece = "X";
             return { ...state};
         case "NEW_GAME":
-            state.board.clear();
-            state.playerPiece = " ";
-            console.log("New Game Started");
+            state.board = new Board(3,3);
+            state.playerPiece = "X";
+            state.o_victory = false;
+            state.x_victory = false;
             return { ...state };
         case "PLAYER_BUTTON":
             console.log(`switching pieces... to ${piece}`);
@@ -37,7 +37,7 @@ const gameStateReducer = (state, action) => {
 
 
 const TTTWrapper = ({ children }) => {
-    const [gameState, dispatch] = useReducer(gameStateReducer, { board: new Board(3, 3), x_victory: false, o_victory: false, playerPiece: " " });
+    const [gameState, dispatch] = useReducer(gameStateReducer, { board: new Board(3, 3), x_victory: false, o_victory: false, playerPiece: "X" });
     const gameContextValue = () => {
         return { gameState, dispatch }
     };

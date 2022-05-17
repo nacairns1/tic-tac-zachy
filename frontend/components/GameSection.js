@@ -14,8 +14,8 @@ const GameSection = (props) => {
     }, [playerPiece]);
 
     const clearingManager = useEffect(()=>{
-        if (playerPiece === " ") setDisplayPiece(" ");
-    },[playerPiece]);
+        if (!gameState.x_victory && !gameState.o_victory) setDisplayPiece(" ");
+    },[gameState.x_victory, gameState.o_victory]);
 
     return <button className="col-span-1 btn btn-accent row-span-1 text-center align-middle bg-slate-700 h-full"
         onClick={clickHandler}> { displayPiece }</button>

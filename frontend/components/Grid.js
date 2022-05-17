@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { useTTTContext } from "../contexts/TTTContext";
+import Modal from "./Modal";
+
 
 import GameSection from "./GameSection";
 
@@ -10,8 +11,8 @@ const Grid = (props) => {
     const {gameState, dispatch} = useTTTContext();
     const clickHandler = () => {
         dispatch({type: 'NEW_GAME'});
-
     }
+    
 
     return (
         <>
@@ -26,9 +27,9 @@ const Grid = (props) => {
             <GameSection id="21" row={2} col={1} />
             <GameSection id="22" row={2} col={2} />
         </div>
+        <Modal />
 
-
-        <button className="btn btn-warning" onClick={clickHandler}>NEW GAME</button>
+        <button className="btn btn-warning mx-auto flex my-10" onClick={clickHandler}>NEW GAME</button>
         </>
     )
 }

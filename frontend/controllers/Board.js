@@ -68,8 +68,7 @@ class Board {
 
     isEmpty(row, col) {
 
-        console.log(`checking isEmpty for ${row} and ${col}.`);
-
+    
         if (this.board[row][col] === 0) {
             return true;
         }
@@ -96,7 +95,7 @@ class Board {
         //check row for all X's
         for (let i = 0; i < this.width; i++) {
             if (!this.isX(row, i)) {
-                console.log(`NOT X piece found at ${row} and ${i}`);
+
                 allXFlag = false;
                 break;
             };
@@ -109,7 +108,7 @@ class Board {
         //Now check the column.
         for (let i = 0; i < this.height; i++) {
             if (!this.isX(i, col)) {
-                console.log(`NOT X piece found at ${i} and ${col}`);
+      
                 allXFlag = false;
                 break;
             };
@@ -120,11 +119,11 @@ class Board {
 
 
         //diagonal check
-        console.log(`Checking at ${row} and ${col} : ${row===1 && col ===1}` );
-        if ((row + col )% 2 === 0 ) {
-            console.log('Diagonal check started correctly');
+
+        if ((row + col) % 2 === 0) {
+
             for (let i = 0; i < 3; i++) {
-                if (!this.isX(i,i)) {
+                if (!this.isX(i, i)) {
                     allXFlag = false;
                     break;
                 }
@@ -135,7 +134,7 @@ class Board {
 
             //check second diagonal
             for (let i = 0; i < 3; i++) {
-                if (!this.isX(2 - i,i) ) {
+                if (!this.isX(2 - i, i)) {
                     allXFlag = false;
                     break;
                 }
@@ -178,11 +177,11 @@ class Board {
 
 
         //diagonal check
-        console.log(`Checking at ${row} and ${col} : ${row===1 && col ===1}` );
-        if ((row + col )% 2 === 0 ) {
+        console.log(`Checking at ${row} and ${col} : ${row === 1 && col === 1}`);
+        if ((row + col) % 2 === 0) {
             console.log('Diagonal check started correctly');
             for (let i = 0; i < 3; i++) {
-                if (!this.isO(i,i)) {
+                if (!this.isO(i, i)) {
                     allOFlag = false;
                     break;
                 }
@@ -193,7 +192,7 @@ class Board {
 
             //check second diagonal
             for (let i = 0; i < 3; i++) {
-                if (!this.isO(2 - i,i) ) {
+                if (!this.isO(2 - i, i)) {
                     allOFlag = false;
                     break;
                 }
@@ -207,11 +206,11 @@ class Board {
 
     clear() {
         this.board = new Array
-        (
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
-        );
+            (
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            );
     }
 }
 
