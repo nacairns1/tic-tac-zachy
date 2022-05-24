@@ -15,19 +15,6 @@ const TicTacToe = () => {
         
     }
 
-    //#region 
-    // const playerSymbolSwitch = () => {
-    //     switch (playerSymbol) {
-    //         case "X":
-    //             setPlayerSymbol("O");
-    //             break;
-    //         case "O":
-    //             setPlayerSymbol("X");
-    //             break;
-    //     }
-    // }
-    //#endregion
-
     return (
         <div className="container mx-auto my-20 w-96 h-96 flex-col justify-center align-middle content-center items-center">
             <h1 className="text-center text-6xl">Tic-Tac-Toe</h1>
