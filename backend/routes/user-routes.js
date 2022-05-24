@@ -1,19 +1,21 @@
-const express = require('express');
-const nanoid = require('nanoid');
+const express = require("express");
+const nanoid = require("nanoid");
+const { getAllUsers, addNewUser, getGamesByUser } = require("../controllers/user-controller");
 
 const router = express.Router();
 
 router.use((req, res, next) => {
-    next();
-})
-
-router.get('/', (req, res)=>{
-    console.log('visiting user-routes');
-    res.send({message: 'seeing user-routes'});
+  next();
 });
 
-router.post('/new-user', (req, res, next) => {
+router.get("/", (req, res) => {
+  console.log("visiting user-routes");
+  res.send({ message: "seeing user-routes" });
+});
 
-})
+router.get("/:username", getGamesByUser)
 
-module.exports = {userRoutes: router};
+router.post("/new-user", addNewUser);
+
+
+module.exports = { userRoutes: router };
