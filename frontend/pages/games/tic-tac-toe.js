@@ -1,37 +1,56 @@
-import { useState, useContext, useCallback } from 'react';
-
-import {useTTTContext} from '../../contexts/TTTContext';
-
-import Link from "next/link";
-import GameSection from "../../components/GameSection";
+import { useTTTContext } from "../../contexts/TTTContext";
 import Grid from "../../components/Grid";
 
 const TicTacToe = () => {
-    
-    const {gameState, dispatch} = useTTTContext();
-    const { board, playerPiece } = gameState;
-    const clickHandler = (piece) => {
-        dispatch({type: `PLAYER_BUTTON`, piece: piece});
-        
-    }
+	const { gameState, dispatch } = useTTTContext();
+	const { playerPiece } = gameState;
+	const clickHandler = (piece) => {
+		dispatch({ type: `PLAYER_BUTTON`, piece: piece });
+	};
 
-    return (
-        <div className="container mx-auto my-20 w-96 h-96 flex-col justify-center align-middle content-center items-center">
-            <h1 className="text-center text-6xl">Tic-Tac-Toe</h1>
-            <div id="player-buttons" className="w-fit container mx-auto flex gap-4 py-5">
-                <button className={`btn btn-square ${playerPiece === "X" && "btn-primary"}`} onClick={() => { clickHandler('X')}}>X</button>
-                <button className={`btn btn-square ${playerPiece === "O" && "btn-primary"}`} onClick={() => { clickHandler('O') }}>O</button>
-            </div>
-            <Grid />
-            <footer className="text-center">
-                <Link href="/">
-                    <a className="text-cyan-500 hover:text-cyan-900">
-                        Click here for the home page
-                    </a>
-                </Link>
-            </footer>
-        </div>
-    )
+	return (
+		<div className="container mx-auto w-full flex-col justify-center align-middle content-center items-center">
+
+			<div className="flex flex-row justify-center items-center mt-10">
+					<button className="btn w-1/3">Play Locally on Browser</button>
+                    <div className="divider divider-horizontal"></div>
+					<button className="btn w-1/3">Invite a Friend to Play</button>
+			</div>
+
+			<div
+				id="player-buttons"
+				className="w-fit container mx-auto flex gap-4 mt-10 mb-10"
+			>
+				<button
+					className={`btn btn-square ${
+						playerPiece === "X" && "btn-primary btn-info"
+					}`}
+					onClick={() => {
+						clickHandler("X");
+					}}
+				>
+					X
+				</button>
+				<button
+					className={`btn btn-square ${
+						playerPiece === "O" && "btn-primary btn-error"
+					}`}
+					onClick={() => {
+						clickHandler("O");
+					}}
+				>
+					O
+				</button>
+			</div>
+			<Grid />
+			<button
+				className="btn btn-warning mx-auto flex mt-12 mb-20"
+				onClick={clickHandler}
+			>
+				NEW GAME
+			</button>
+		</div>
+	);
 };
 
 export default TicTacToe;

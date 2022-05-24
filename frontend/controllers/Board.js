@@ -72,7 +72,7 @@ class Board {
 	}
 
 	toggleX(boardSquareInd) {
-        if (!this.isEmpty(boardSquareInd)) return;
+        if (this.isO(boardSquareInd)) return;
 		this.board[boardSquareInd] = 1;
 		let allXFlag = false;
 
@@ -128,7 +128,7 @@ class Board {
 	}
 
 	toggleO(boardSquareInd) {
-        if (!this.isEmpty(boardSquareInd)) return;
+        if (this.isX(boardSquareInd)) return;
 		this.board[boardSquareInd] = 2;
 		let allOFlag = false;
 

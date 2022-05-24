@@ -1,18 +1,17 @@
-import '../styles/globals.css'
-import { TTTContext, TTTWrapper } from '../contexts/TTTContext';
-import NavBar from '../components/NavBar';
+import "../styles/globals.css";
+import { TTTContext, TTTWrapper } from "../contexts/TTTContext";
+import { Layout } from "../components/Layout";
 
 function MyApp({ Component, pageProps }) {
-  return (
-
-    <>
-    <NavBar/>
-    <TTTWrapper>
-      <Component {...pageProps} />
-    </TTTWrapper>
-    </>
-  
-  )
+	return (
+		<>
+			<Layout>
+				<TTTWrapper>
+					<Component {...pageProps} />
+				</TTTWrapper>
+			</Layout>
+		</>
+	);
 }
 
-export default MyApp
+export default MyApp;

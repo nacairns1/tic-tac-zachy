@@ -35,6 +35,8 @@ test("cleared state is a new game", () => {
     expect(game1.isSolvedX).toBe(false);
 });
 
+//x tests
+
 test("horizontal X victory", () => {
     game1.clear();
     game1.toggleX(3);
@@ -85,7 +87,6 @@ test("vertical O victory", () => {
     game1.toggleO(2);
     game1.toggleO(5);
     game1.toggleO(8);
-
     expect(game1.isSolvedO).toBe(true);
 });
 
@@ -110,7 +111,7 @@ test("Not overriding game piece placement", () => {
     game1.toggleX(3);
     game1.toggleO(3);
     expect(game1.isX(3)).toBe(true);
-})
+});
 
 test
 
