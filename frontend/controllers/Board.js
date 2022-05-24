@@ -21,6 +21,7 @@ class Board {
                 [0, 0, 0]
             );
 
+
     }
 
     //#region Getters and Setters to potentially reintroduce
@@ -68,7 +69,7 @@ class Board {
 
     isEmpty(row, col) {
 
-    
+
         if (this.board[row][col] === 0) {
             return true;
         }
@@ -102,19 +103,19 @@ class Board {
             allXFlag = true;
         }
 
-        console.log(`X solved after row check? ${allXFlag}`);
+
         if (allXFlag) return this.isSolvedX = true;
 
         //Now check the column.
         for (let i = 0; i < this.height; i++) {
             if (!this.isX(i, col)) {
-      
+
                 allXFlag = false;
                 break;
             };
             allXFlag = true;
         }
-        console.log(`X solved after col check? ${allXFlag}`);
+
         if (allXFlag) return this.isSolvedX = true;
 
 
@@ -129,7 +130,7 @@ class Board {
                 }
                 allXFlag = true;
             }
-            console.log(`X solved after first diagonal check? ${allXFlag}`);
+
             if (allXFlag) return this.isSolvedX = true;
 
             //check second diagonal
@@ -141,7 +142,7 @@ class Board {
                 allXFlag = true;
             }
 
-            console.log(`X solved after second diagonal check? ${allXFlag}`);
+
             if (allXFlag) return this.isSolvedX = true;
         }
     }
@@ -153,33 +154,33 @@ class Board {
         //check row for all O's
         for (let i = 0; i < this.width; i++) {
             if (!this.isO(row, i)) {
-                console.log(`NOT O piece found at ${row} and ${i}`);
+
                 allOFlag = false;
                 break;
             };
             allOFlag = true;
         }
 
-        console.log(`O solved after row check? ${allOFlag}`);
+
         if (allOFlag) return this.isSolvedO = true;
 
         //Now check the column.
         for (let i = 0; i < this.height; i++) {
             if (!this.isO(i, col)) {
-                console.log(`NOT O piece found at ${i} and ${col}`);
+
                 allOFlag = false;
                 break;
             };
             allOFlag = true;
         }
-        console.log(`O solved after col check? ${allOFlag}`);
+
         if (allOFlag) return this.isSolvedO = true;
 
 
         //diagonal check
-        console.log(`Checking at ${row} and ${col} : ${row === 1 && col === 1}`);
+
         if ((row + col) % 2 === 0) {
-            console.log('Diagonal check started correctly');
+
             for (let i = 0; i < 3; i++) {
                 if (!this.isO(i, i)) {
                     allOFlag = false;
@@ -187,7 +188,7 @@ class Board {
                 }
                 allOFlag = true;
             }
-            console.log(`O solved after first diagonal check? ${allOFlag}`);
+
             if (allOFlag) return this.isSolvedO = true;
 
             //check second diagonal
@@ -199,7 +200,7 @@ class Board {
                 allOFlag = true;
             }
 
-            console.log(`O solved after second diagonal check? ${allOFlag}`);
+
             if (allOFlag) return this.isSolvedO = true;
         }
     }
@@ -211,6 +212,7 @@ class Board {
                 [0, 0, 0],
                 [0, 0, 0]
             );
+
     }
 }
 

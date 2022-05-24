@@ -8,10 +8,10 @@ const GameSection = (props) => {
     const { board, playerPiece } = gameState;
     const { row, col } = props;
 
-    const clickHandler = useCallback(() => {
+    const clickHandler = () => {
         dispatch({type: `SELECT_${playerPiece}`, row: row, col: col});
         if (board.isEmpty(row,col)) setDisplayPiece(playerPiece);
-    }, [playerPiece]);
+    }
 
     const clearingManager = useEffect(()=>{
         if (!gameState.x_victory && !gameState.o_victory) setDisplayPiece(" ");

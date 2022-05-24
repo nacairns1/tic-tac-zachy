@@ -28,7 +28,6 @@ const gameStateReducer = (state, action) => {
             state.x_victory = false;
             return { ...state };
         case "PLAYER_BUTTON":
-            console.log(`switching pieces... to ${piece}`);
             return { ...state, playerPiece: piece };
         default:
             return { ...state };
@@ -37,7 +36,7 @@ const gameStateReducer = (state, action) => {
 
 
 const TTTWrapper = ({ children }) => {
-    const [gameState, dispatch] = useReducer(gameStateReducer, { board: new Board(3, 3), x_victory: false, o_victory: false, playerPiece: "X" });
+    const [gameState, dispatch] = useReducer(gameStateReducer, { board: new Board(3, 3), x_victory: false, o_victory: false, playerPiece: "X", clear_switch: false });
     const gameContextValue = () => {
         return { gameState, dispatch }
     };
