@@ -4,9 +4,8 @@ const Game = require('../schemas/GameSchema');
 const TTT_GAMES = [
     {
         id: 'game1',
-        game: [0, 1, 2,
-            0, 1, 2,
-            2, 1, 0],
+        game: 'tic-tac-toe',
+        gameState: [0, 1, 2, 0, 1, 2, 2, 1, 0],
         players:
             [
                 {
@@ -21,9 +20,8 @@ const TTT_GAMES = [
     },
     {
         id: 'game2',
-        game: [0, 1, 2,
-            0, 1, 2,
-            2, 1, 0],
+        game: 'tic-tac-toe',
+        gameState: [0, 1, 2, 0, 1, 2, 2, 1, 0],
         players:
             [
                 {
@@ -38,9 +36,8 @@ const TTT_GAMES = [
     },
     {
         id: 'game3',
-        game: [0, 1, 2,
-            0, 1, 2,
-            2, 1, 0],
+        gameState: [0, 1, 2,
+            0, 1, 2,2, 1, 0],
         players:
             [
                 {
@@ -69,12 +66,12 @@ const getGameById = (req, res, next) => {
     res.send({ game: game });
 }
 
-const createNewGame = async (req, res, next) => {
+const createNewGame = (req, res, next) => {
     const uniqueGameId = nanoid.nanoid();
     const player1 = req.body.player1;
     const player2 = req.body.player2;
 
-    const gameToAdd = new Game({
+    const gameToAdd = {
         gameId: uniqueGameId,
         game:
             [
@@ -92,8 +89,8 @@ const createNewGame = async (req, res, next) => {
                 piece: 'o',
             }
         ]
-    })
-    await gameToAdd.save();
+    }
+
     res.send({ gameToAdd: gameToAdd });
 }
 

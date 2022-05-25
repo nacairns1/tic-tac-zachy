@@ -1,21 +1,23 @@
+require("dotenv").config();
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const nanoid = require("nanoid");
-const { getAllUsers, addNewUser, getGamesByUser } = require("../controllers/user-controller");
+
+const {
+	getAllUsers,
+	registerNewUser,
+	getGamesByUser,
+	loginUser,
+} = require("../controllers/user-controller");
 
 const router = express.Router();
 
-router.use((req, res, next) => {
-  next();
-});
+router.get("/", getAllUsers);
 
-router.get("/", (req, res) => {
-  console.log("visiting user-routes");
-  res.send({ message: "seeing user-routes" });
-});
+router.get("/:username", getGamesByUser);
 
-router.get("/:username", getGamesByUser)
+router.post("/register", registerNewUser);
 
-router.post("/new-user", addNewUser);
+router.post("/login", loginUser);
 
-
-module.exports = { userRoutes: router };
+module.exports = router;

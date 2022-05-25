@@ -6,9 +6,6 @@ const {getAllGames, getGameById, createNewGame, editGameByGameId, deleteGameByGa
 
 
 //middleware specific to this router
-router.use((req, res, next) => {
-    next();
-})
 
 // !!send can only be sent once without causing an error!!
 

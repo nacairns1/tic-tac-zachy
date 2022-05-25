@@ -1,23 +1,17 @@
 const Footer = () => {
 	return (
-		<footer className="footer p-10 bg-base-300 text-base-content">
-			<div>
-				<h2>NCZC</h2>
-			</div>
-			<div>
-				<span className="footer-title">Project</span>
-				<a className="link link-hover">GitHub</a>
-			</div>
-			<div>
-				<span className="footer-title">Creators</span>
-				<div className="flex flex-row">
+		<footer className="footer footer-center h-24 absolute bottom-0 bg-base-300 text-base-content p-5">
+			<div className="flex flex-row md:place-self-end">
+				<div className="flex flex-col">
+					<h2 className="text-base footer-title">Noah C</h2>
 					<ul>
-						<li className="link link-hover">Noah C Website</li>
 						<li className="link link-hover">Noah C GitHub</li>
 					</ul>
-                    <div className="divider divider-horizontal"></div>
+				</div>
+				<div className="divider divider-horizontal"></div>
+				<div className="flex flex-col">
+					<h2 className="text-base footer-title">Zach C</h2>
 					<ul>
-						<li className="link link-hover">Zach C Website</li>
 						<li className="link link-hover">Zach C GitHub</li>
 					</ul>
 				</div>

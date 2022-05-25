@@ -1,21 +1,19 @@
 import { createContext, useContext, useReducer } from "react";
 import Router from "next/router";
-const bcrypt = require('bcrypt');
 
 const AuthContext = createContext();
 
-async function hash(password) {
-    const salt = await bcrypt.genSalt(6);
-    const hashed = await bcrypt.hash(password, salt);
-    return hashed;
-}
-
 const authStateReducer = async (state, action) => {
-    const {plainTextPW} = action;
+    const {username, password} = action;
     //pull in hashed login from dB
-    const dBPassHashed = await fetch({})
-    const hashed = await hash(plainTextPW);
-    const isValid = await bcrypt.compare(hashed, dBPassHashed)
+	switch (action.type) {
+		case "login":
+			break;
+		case "register":
+			break;
+		default:
+			break;
+	}
 }
 
 const AuthWrapper = ({ children }) => {
@@ -34,7 +32,7 @@ const AuthWrapper = ({ children }) => {
 };
 
 const useAuthContext = () => {
-	return useContext(TTTContext);
+	return useContext(AuthContext);
 };
 
 module.exports = {AuthWrapper, useAuthContext}

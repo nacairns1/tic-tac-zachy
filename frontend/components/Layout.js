@@ -1,15 +1,16 @@
-import {Footer} from "./Footer"
-import {NavBar} from "./NavBar"
+import { Footer } from "./Footer";
+import { NavBar } from "./NavBar";
 
-const Layout = ({props, children}) => {
+const Layout = ({ props, children }) => {
+	return (
+		<div className="relative min-h-screen">
+			<div className="pb-[4.75rem]">
+				<NavBar />
+				{children}
+				<Footer />
+			</div>
+		</div>
+	);
+};
 
-    return (
-        <>
-        <NavBar/>
-        {children}
-        <Footer />
-        </>
-    )
-}
-
-module.exports = {Layout};
+module.exports = { Layout };

@@ -22,7 +22,7 @@ const GameSection = (props) => {
 			case 0:
 				setDisplayPiece(" ");
 				setDisplayClassName(
-					"btn btn-square row-span-1 text-center align-middle bg-transparent h-5/6 w-5/6 border-none"
+					"btn btn-square row-span-1 text-center align-middle btn-ghost h-5/6 w-5/6 border-none"
 				);
 				break;
 			case 1:
@@ -58,19 +58,19 @@ const GameSection = (props) => {
 		);
 		setDisplayClassName(
 			(prev) =>
-				`${prev} ${
+				`btn btn-square btn-success row-span-1 text-center align-middle h-5/6 w-5/6 text-4xl ${
 					index === 0
-						? "animate-jump-once-no-delay bg-white"
+						? "animate-jump-once-no-delay btn-success bg-success"
 						: index === 1
-						? "animate-jump-once-sm-delay bg-gray-50"
-						: "animate-jump-once-md-delay bg-white"
+						? "animate-jump-once-sm-delay btn-success bg-success"
+						: "animate-jump-once-md-delay btn-success bg-success"
 				}`
 		);
 	}, [victorySquare]);
 
     useEffect(() => {
 		if(gameState.draw) {
-            setDisplayClassName((prev) => `${prev} animate-shake-once`)
+            setDisplayClassName((prev) => `${prev} animate-shake-once`);
         }
 	}, [gameState.draw]);
 
