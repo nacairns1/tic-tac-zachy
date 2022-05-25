@@ -113,6 +113,38 @@ test("Not overriding game piece placement", () => {
     expect(game1.isX(3)).toBe(true);
 });
 
+
+test("Receiving back winning rows for X and O", () => {
+    game1.clear();
+
+    //X Diagonal check
+    
+    game1.toggleX(0);
+    game1.toggleX(1);
+    const results = game1.toggleX(2);
+    const winningSquares = [0,1,2];
+
+    results.map(square => {
+        expect(winningSquares.includes(square)).toBe(true);
+    });
+
+    const winningSquaresO = [0,4,8];
+
+    // O diagonal check
+
+    game1.clear();
+    game1.toggleO(0);
+    game1.toggleO(4);
+    const results2 = game1.toggleO(8);
+
+    results2.map(square => {
+        expect(winningSquaresO.includes(square)).toBe(true);
+    });
+    
+    
+});
+
+
 test
 
 

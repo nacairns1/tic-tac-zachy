@@ -72,7 +72,7 @@ class Board {
 	}
 
 	toggleX(boardSquareInd) {
-        if (this.isO(boardSquareInd)) return;
+		if (this.isO(boardSquareInd)) return;
 		this.board[boardSquareInd] = 1;
 		let allXFlag = false;
 
@@ -85,7 +85,10 @@ class Board {
 			}
 			allXFlag = true;
 		}
-		if (allXFlag) return (this.isSolvedX = true);
+		if (allXFlag) {
+            this.isSolvedX = true;
+            return rowValues;
+        }
 
 		//Now check the column.
 		const colValues = this.colValuesToCheck(boardSquareInd);
@@ -96,7 +99,10 @@ class Board {
 			}
 			allXFlag = true;
 		}
-		if (allXFlag) return (this.isSolvedX = true);
+		if (allXFlag) {
+            this.isSolvedX = true;
+            return colValues;
+        }
 
 		//diagonal from index 0 --> 8 check conditionally
 		//helper function returns false if not in the correct diagonal
@@ -110,7 +116,10 @@ class Board {
 				allXFlag = true;
 			}
 
-			if (allXFlag) return (this.isSolvedX = true);
+			if (allXFlag) {
+				this.isSolvedX = true;
+				return diagDownValues;
+			}
 		}
 
 		//repeat process for second diagonal
@@ -123,12 +132,15 @@ class Board {
 				}
 				allXFlag = true;
 			}
-			if (allXFlag) return (this.isSolvedX = true);
+			if (allXFlag) {
+				this.isSolvedX = true;
+				return diagUpValues;
+			}
 		}
 	}
 
 	toggleO(boardSquareInd) {
-        if (this.isX(boardSquareInd)) return;
+		if (this.isX(boardSquareInd)) return;
 		this.board[boardSquareInd] = 2;
 		let allOFlag = false;
 
@@ -141,7 +153,10 @@ class Board {
 			}
 			allOFlag = true;
 		}
-		if (allOFlag) return (this.isSolvedO = true);
+		if (allOFlag) { 
+            this.isSolvedO = true;
+            return rowValues; 
+        }
 
 		//Now check the column.
 		const colValues = this.colValuesToCheck(boardSquareInd);
@@ -152,7 +167,10 @@ class Board {
 			}
 			allOFlag = true;
 		}
-		if (allOFlag) return (this.isSolvedO = true);
+		if (allOFlag){ 
+            this.isSolvedO = true
+            return colValues;
+        }
 
 		//diagonal from index 0 --> 8 check conditionally
 		//helper function returns false if not in the correct diagonal
@@ -166,7 +184,10 @@ class Board {
 				allOFlag = true;
 			}
 
-			if (allOFlag) return (this.isSolvedO = true);
+			if (allOFlag) {
+				this.isSolvedO = true;
+                return diagDownValues;
+			}
 		}
 
 		//repeat process for second diagonal
@@ -179,13 +200,16 @@ class Board {
 				}
 				allOFlag = true;
 			}
-			if (allOFlag) return (this.isSolvedO = true);
+			if (allOFlag) {
+				this.isSolvedO = true;
+				return diagUpValues;
+			}
 		}
 	}
 
 	clear() {
-        this.isSolvedX = false;
-        this.isSolvedO = false;
+		this.isSolvedX = false;
+		this.isSolvedO = false;
 		this.board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 	}
 }

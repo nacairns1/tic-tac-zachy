@@ -15,10 +15,7 @@ const Modal = (props) => {
         setIsOpen(false);
     }
 
-
-
     useEffect(()=>{
-        
         if (x_victory) {
             setText( `Victory for X!`)
             return setIsOpen(true);
