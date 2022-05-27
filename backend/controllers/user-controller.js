@@ -41,7 +41,8 @@ const registerNewUser = async (req, res, next) => {
 		const hashedPassword = await bcrypt.hash(password, salt);
 		const user = { username: username, password: hashedPassword, games: [] };
 		dummyUsers.push(user);
-		res.json({ user });
+		res.redirect(307, './login');
+		
 	} catch (err) {
 		console.log(err);
 		res.status(500).send();
@@ -57,10 +58,12 @@ const getUserByUserId = (id) => {
 };
 
 const loginUser = (req, res, next)=>{
-
+	console.log('attempting log in...');
 	if (req.user.username){
+		console.log(`${req.user.username} succesful`);
 		res.send({user: req.user.username});
 	} else {
+		console.log('unsuccessful');
 		res.status(400).send({message:"error logging in"});
 	}
 }

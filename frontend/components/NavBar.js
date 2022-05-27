@@ -1,8 +1,10 @@
-import { Fragment, useState, useReducer, useEffect } from "react";
+import { Fragment, useState, useReducer, useEffect, useContext } from "react";
 import Link from "next/link";
 
+import { useAuthContext } from "../contexts/AuthContext";
+
 const navigation = [
-	{ name: "Home", href: "#", current: true },
+	{ name: "Home", href: "/", current: true },
 	{ name: "Tic-Tac-Toe", href: "#", current: false },
 ];
 
@@ -70,18 +72,20 @@ const themeReducer = (state, action) => {
 };
 
 const NavBar = () => {
+	const { loggedInUser } = useAuthContext();
+	const [profileTabOpen, setProfileTabOpen] = useState(false);
 	const [themeState, dispatch] = useReducer(themeReducer, { theme: "night" });
 
-	useEffect(()=>{
+	useEffect(() => {
 		const savedTheme = window.localStorage.getItem("theme");
-		savedTheme && dispatch({type:savedTheme});
+		savedTheme && dispatch({ type: savedTheme });
 	}, []);
 
 	return (
 		<>
-			<div className="navbar bg-base-300 text-base">
+			<div className="navbar bg-base-300">
 				<div className="flex-1">
-					<Link href='/'>
+					<Link href="/">
 						<a className="btn btn-ghost normal-case text-xl">TTZ</a>
 					</Link>
 				</div>
@@ -130,8 +134,20 @@ const NavBar = () => {
 							<div className="card-body">{/* TODO */}</div>
 						</div>
 					</div>
+
 					<div className="dropdown dropdown-end">
-						<label tabIndex="0" className="btn btn-ghost btn-circle">
+						<label
+							tabIndex="0"
+							className="btn btn-ghost"
+							onClick={() => {
+								setProfileTabOpen((prev) => !prev);
+							}}
+						>
+							<div className="flex items-center">
+								<label className="text-sm italic font-semibold">
+									{loggedInUser}
+								</label>
+							</div>
 							<div className="w-10 rounded-full flex justify-center align-center">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -149,23 +165,31 @@ const NavBar = () => {
 								</svg>
 							</div>
 						</label>
-						<ul
-							tabIndex="0"
-							className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-						>
-							<li>
-								<a className="justify-between">
-									Profile
-									<span className="badge">New</span>
-								</a>
-							</li>
-							<li>
-								<a>Settings</a>
-							</li>
-							<li>
-								<a>Logout</a>
-							</li>
-						</ul>
+
+						{profileTabOpen && (
+							<ul
+								tabIndex="0"
+								className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+							>
+								<li>
+									<Link
+										href={
+											loggedInUser ? `/users/${loggedInUser}` : "/users/login"
+										}
+									>
+										<a className="justify-between">
+											{loggedInUser ? `Profile` : "Login / Register"}
+										</a>
+									</Link>
+								</li>
+
+								{loggedInUser && (
+									<li>
+										<a>Logout</a>
+									</li>
+								)}
+							</ul>
+						)}
 					</div>
 				</div>
 			</div>

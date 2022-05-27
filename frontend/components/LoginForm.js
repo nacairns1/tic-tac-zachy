@@ -1,7 +1,85 @@
 import { useState, useCallback } from "react";
+import { useFormik } from "formik";
+const axios = require("axios").default;
+import Router from "next/router";
+
+import {useAuthContext} from '../contexts/AuthContext';
+
+const validate = (values) => {
+	const errors = {};
+
+	if (!values.username) {
+		errors.username = "Required";
+	} else if (values.username.length > 15) {
+		errors.username = "Must be 15 characters or less";
+	}
+
+	if (values.password.length < 6 && values.password !== "") {
+		errors.password = "Password must be at least 6 characters";
+	} else if (values.password.length > 30) {
+		errors.lastName = "Must be 30 characters or less";
+	}
+
+	return errors;
+};
+
+
+
 
 const LoginForm = (props) => {
-	const [currForm, setCurrForm] = useState("Register");
+	const [currForm, setCurrForm] = useState("Log in");
+	const [loading, setLoading] = useState(false);
+	const {setLoggedInUser} = useAuthContext();
+
+	const onRegisterFormSubmit = useCallback(async (data) => {
+		const httpMessageConfig = {
+			method: "post",
+			url: "http://localhost:5000/users/register",
+			data: {
+				username: data.username,
+				password: data.password,
+				games: []
+			},
+		};
+		try {
+			const res = await axios(httpMessageConfig);
+			let username = res.data.user;
+			console.log(username);
+			setLoggedInUser(username);
+			Router.push(`/users/${username}`);
+		} catch (e) {
+
+			formik.isValid = false;
+		}
+	});
+	
+	const onloginFormSubmit = useCallback(async (data) => {
+		const httpMessageConfig = {
+			method: "post",
+			url: "http://localhost:5000/users/login",
+			data: {
+				username: data.username,
+				password: data.password,
+			},
+		};
+		try {
+			const res = await axios(httpMessageConfig);
+			console.log(res)
+			let username = res.data.user;
+			setLoggedInUser(username);
+			Router.push(`/users/${username}`);
+		} catch (e) {
+
+			formik.isValid = false;
+		}
+	});
+
+	const formik = useFormik({
+		initialValues: { username: "", password: "" },
+		validate: validate,
+		onSubmit:
+			currForm === "Register" ? onRegisterFormSubmit : onloginFormSubmit,
+	});
 
 	const swapForm = useCallback(() => {
 		if (currForm === "Register") {
@@ -11,67 +89,57 @@ const LoginForm = (props) => {
 		}
 	});
 
-	const handleSubmit = async (event ) => {
-		event.preventDefault();
-
-		const data = {
-			email: event.target.email.value,
-			username: event.target.username.value,
-			password: event.target.password.value
-		}
-		console.log(data);
-	}
-
 	return (
-		<div className={"bg-base-300 md:w-1/2  px-5 py-5 rounded-3xl shadow-md"}>
-			<h2 className="text-xl text-primary-focus">{currForm}</h2>
-			<form className="form-control" onSubmit={handleSubmit}>
-				{currForm === "Register" && (
-					<div>
-						<label className="label">
-							<span className="label-text">Email</span>
-							<span className="label-text-alt text-2xs ">
-								Email is not public for other users
-							</span>
-						</label>
-						<input
-							type="email"
-							placeholder=""
-							name="email"
-							className="input input-bordered w-full"
-						/>
-					</div>
-				)}
+		<div className="w-full h-full flex flex-col md:flex-row items-center justify-around">
+			<div className={"bg-base-300 w-3/5  px-5 py-5 rounded-3xl shadow-md"}>
+				<h2 className="text-xl text-primary-focus font-bold">{currForm}</h2>
+				<form className="form-control" onSubmit={formik.handleSubmit}>
 
-				<label className="label">
-					<span className="label-text">Username</span>
-				</label>
-				<input
-					type="text"
-					name="username"
-					placeholder=""
-					
-					className="input input-bordered w-full "
-				/>
-				<label className="label">
-					<span className="label-text">Password</span>
-				</label>
-				<input
-					minLength={6}
-					type="password"
-					placeholder=""
-					name="password"
-					className="input input-bordered w-full"
-				/>
-				<div className="flex flex-col md:flex-row gap-5 justify-center items-center pt-2">
-					<button className="btn btn-primary btn-md" type={"submit"}>
-						Submit
-					</button>
-					<button className="btn btn-secondary btn-md" onClick={swapForm}>
-						{currForm === "Register" ? "Log in" : "Register"}
-					</button>
-				</div>
-			</form>
+					<label className="label">
+						<span className="label-text">Username</span>
+					</label>
+					<input
+						className={`w-4/5 input input-bordered ${formik.errors.username && 'input-error'}`}
+						type="text"
+						name="username"
+						onChange={formik.handleChange}
+						value={formik.values.username}
+					/>
+					{formik.errors.username ? (
+						<div className="text-error-content italic">
+							{formik.errors.username}
+						</div>
+					) : null}
+					<label className="label">
+						<span className="label-text">Password</span>
+					</label>
+					<input
+						className={`w-4/5 input input-bordered ${(currForm === "Register" && formik.errors.password) && 'input-error'}`} 
+						type="password"
+						name="password"
+						onChange={formik.handleChange}
+						value={formik.values.password}
+					/>
+					{(formik.errors.password  && currForm === "Register") ? (
+						<div className="text-error-content italic">
+							{formik.errors.password}
+						</div>
+					) : null}
+					<div className="flex flex-col md:flex-row gap-5 justify-center items-center pt-2">
+						<button className={`btn btn-primary ${formik.values.password && formik.values.username ? '' : 'btn-disabled'}`} type={"submit"} onClick={()=>{}}>
+							{currForm}
+						</button>
+					</div>
+				</form>
+			</div>
+			<div className="flex flex-row md:flex-col w-1/5 py-3 min-w-fit gap-3 items-center italic">
+				{currForm === "Register"
+					? "Already have an account?"
+					: "Need to create an account?"}
+				<button className="btn btn-secondary" onClick={swapForm}>
+					{currForm === "Register" ? "Log in" : "Register"}
+				</button>
+			</div>
 		</div>
 	);
 };
