@@ -1,5 +1,6 @@
 import { useTTTContext } from "../../../contexts/TTTContext";
 import Grid from "../../../components/Grid";
+import { PlayerSection } from "../../../components/PlayerSection";
 
 const TicTacToe = () => {
 	const { gameState, dispatch } = useTTTContext();
@@ -9,20 +10,8 @@ const TicTacToe = () => {
 	};
 
 	return (
-		<div className="flex flex-col md:flex-row justify-evenly items-center">
-			<section className="flex flex-row md:flex-col justify-center items-center mx-auto md:ml-10 text-center w-4/5 md:w-1/6 place-self-center">
-				<div className={`card bg-info items-center justify-center w-1/3 md:w-1/2 text-neutral text-center rounded-lg py-3`}>
-					<h2 className="card-title">Player 1</h2>
-					<div className="card-content text-3xl md:text-5xl text-base-100">X</div>
-		
-				</div>
-				<div className="divider divider-horizontal md:divider-vertical">{gameState.draw ? "DRAW" : "VS"}</div>
-				<div className={`card bg-error items-center justify-center w-1/3 md:w-1/2 text-neutral text-center rounded-lg py-3`}>
-					<h2 className="card-title">Player 2</h2>
-					<span className="text-3xl md:text-5xl card-content ">O </span>
-				</div>
-			</section>
-
+		<div className="flex flex-col md:flex-row justify-evenly items-center pt-10">
+			<PlayerSection />
 			<Grid />
 
 			<div className="w-full md:w-1/6 gap-2 md:gap-0 flex flex-row md:flex-col items-center justify-center mt-10 ">

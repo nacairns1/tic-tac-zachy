@@ -13,6 +13,7 @@ class Board {
 		this.isSolvedX = false;
 		this.isSolvedO = false;
 		this.board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+		this.winning_squares = [];
 	}
 
 	isEmpty(boardSquareInd) {
@@ -69,6 +70,25 @@ class Board {
 		const diagUp = [6, 4, 2];
 		if (diagUp.includes(boardSquareInd)) return diagUp;
 		return false;
+	}
+
+	loadBoard(newGameState) {
+		
+		this.clear();
+		for (let i = 0; i < newGameState.length; i++) {
+			if(newGameState[i] === 1) {
+		
+				const squares = this.toggleX(i);
+				if(squares) this.winning_squares=squares;
+				};
+			
+			if(newGameState[i] === 2) {
+			
+				const squares = this.toggleO(i);
+				if(squares) this.winning_squares=squares;
+				}
+			}
+		return this;
 	}
 
 	toggleX(boardSquareInd) {

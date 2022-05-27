@@ -1,6 +1,7 @@
 const nanoid = require("nanoid");
 const User = require("../schemas/UserSchema");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 const dummyUsers = [
 	{
@@ -47,26 +48,28 @@ const registerNewUser = async (req, res, next) => {
 	}
 };
 
-const loginUser = async (req, res, next) => {
-	const username = req.body.username;
-	const password = req.body.password;
-
-	const user = dummyUsers.find((user) => user.username === username);
-
-	if (user === undefined) {
-		res.status(401).send({ message: "failed login" });
-	}
-
-	try {
-		const result = await bcrypt.compare(password, user.password);
-		if (result) {
-			res.status(200).send({ user });
-		} else {
-			res.status(401).send({ message: "failed login" });
-		}
-	} catch (err) {
-		res.status(500).send();
-	}
+const getUserByUsername = (username) => {
+	return dummyUsers.find((user) => user.username === username);
 };
 
-module.exports = { getAllUsers, getGamesByUser, registerNewUser, loginUser };
+const getUserByUserId = (id) => {
+	return dummyUsers.find((user) => user.id === id);
+};
+
+const loginUser = (req, res, next)=>{
+
+	if (req.user.username){
+		res.send({user: req.user.username});
+	} else {
+		res.status(400).send({message:"error logging in"});
+	}
+}
+
+module.exports = {
+	getAllUsers,
+	getUserByUsername,
+	getUserByUserId,
+	getGamesByUser,
+	registerNewUser,
+	loginUser,
+};

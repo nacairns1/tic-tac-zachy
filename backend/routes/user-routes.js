@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const nanoid = require("nanoid");
+const passport = require('passport');
 
 const {
 	getAllUsers,
@@ -18,6 +17,6 @@ router.get("/:username", getGamesByUser);
 
 router.post("/register", registerNewUser);
 
-router.post("/login", loginUser);
+router.post("/login", passport.authenticate("local"), loginUser);
 
 module.exports = router;

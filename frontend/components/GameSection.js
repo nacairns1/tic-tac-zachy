@@ -9,7 +9,7 @@ const GameSection = (props) => {
 	const [victorySquare, setVictorySquare] = useState(false);
 	const [activeGame, setActiveGame] = useState(true);
 	const { gameState, dispatch } = useTTTContext();
-	const { playerPiece, winning_squares } = gameState;
+	const { playerPiece } = gameState;
 	const { gameSquareId } = props;
 
 	const clickHandler = () => {
@@ -18,6 +18,7 @@ const GameSection = (props) => {
 	};
 
 	useEffect(() => {
+		if (gameState.board === undefined) return;
 		switch (gameState.board.board[gameSquareId]) {
 			case 0:
 				setDisplayPiece(" ");
@@ -40,9 +41,10 @@ const GameSection = (props) => {
 			default:
 				break;
 		}
-	}, [gameState]);
+	}, [gameState.board]);
 
 	useEffect(() => {
+		if (gameState.winning_squares === undefined) return;
 		setVictorySquare(gameState.winning_squares.includes(gameSquareId));
 		if (gameState.winning_squares.length > 0) {
 			setActiveGame(false);
@@ -57,24 +59,21 @@ const GameSection = (props) => {
 			(gameSquare) => gameSquare === gameSquareId
 		);
 		setDisplayClassName(
-			(prev) =>
-				`btn btn-square btn-success row-span-1 text-center align-middle h-5/6 w-5/6 text-4xl ${
-					index === 0
-						? "animate-jump-once-no-delay btn-success bg-success"
-						: index === 1
-						? "animate-jump-once-sm-delay btn-success bg-success"
-						: "animate-jump-once-md-delay btn-success bg-success"
-				}`
+			`btn btn-square btn-success row-span-1 text-center align-middle h-5/6 w-5/6 text-4xl ${
+				index === 0
+					? "animate-jump-once-no-delay btn-success bg-success"
+					: index === 1
+					? "animate-jump-once-sm-delay btn-success bg-success"
+					: "animate-jump-once-md-delay btn-success bg-success"
+			}`
 		);
 	}, [victorySquare]);
 
-    useEffect(() => {
-		if(gameState.draw) {
-            setDisplayClassName((prev) => `${prev} animate-shake-once`);
-        }
+	useEffect(() => {
+		if (gameState.draw) {
+			setDisplayClassName((prev) => `${prev} animate-shake-once`);
+		}
 	}, [gameState.draw]);
-
-    
 
 	return (
 		<button className={displayClassName} onClick={clickHandler}>

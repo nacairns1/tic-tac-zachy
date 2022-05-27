@@ -5,7 +5,7 @@ import Router from "next/router";
 const TTTContext = createContext();
 
 const gameStateReducer = (state, action) => {
-	const { gameSquareId, piece } = action;
+	const { gameSquareId, piece, game } = action;
     let squares;
 	switch (action.type) {
 		case "SELECT_X":
@@ -42,6 +42,22 @@ const gameStateReducer = (state, action) => {
 			return { ...state };
 		case "PLAYER_BUTTON":
 			return { ...state, playerPiece: piece };
+		case "LOAD_GAME":
+			state.gameId = game.id;
+			state.board = new Board();
+			state.board.loadBoard(game.gameState);
+			state.playerX = game.players[0];
+			state.playerO = game.players[1];
+			if(state.board.isSolvedO) {
+				state.winning_squares = state.board.winning_squares;
+				state.o_victory = true;
+			}
+			if(state.board.isSolvedX) {
+				state.x_victory = true;
+				state.winning_squares = state.board.winning_squares;
+			}
+			return {...state};
+
 		default:
 			return { ...state };
 	}
