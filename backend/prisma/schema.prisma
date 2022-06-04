@@ -1,0 +1,25 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type GamesPlayers {
+  id    String @map("_id") @db.ObjectId
+  piece String
+}
+
+model games {
+  id      String         @id @default(auto()) @map("_id") @db.ObjectId
+  v       Int            @map("__v")
+  game    Int[]
+  gameId  String
+  players GamesPlayers[]
+}
+
+model users {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  v        Int    @map("__v")
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  games    Json?
+  username String
+}
