@@ -1,7 +1,6 @@
-const nanoid = require("nanoid");
-const User = require("../schemas/UserSchema");
-const bcrypt = require("bcrypt");
-const passport = require("passport");
+import nanoid from 'nanoid';
+import bcrypt from "bcrypt";
+import passport from "passport";
 
 const dummyUsers = [
 	{
@@ -21,18 +20,18 @@ const dummyUsers = [
 	},
 ];
 
-const getAllUsers = (req, res, next) => {
+export const getAllUsers = (req, res, next) => {
 	res.send(dummyUsers);
 };
 
-const getGamesByUser = async (req, res, next) => {
+export const getGamesByUser = async (req, res, next) => {
 	const username = req.params.username;
 
 	const games = dummyUsers;
 	res.send({ games: games });
 };
 
-const registerNewUser = async (req, res, next) => {
+export const registerNewUser = async (req, res, next) => {
 	const username = req.body.username;
 	const password = req.body.password;
 
@@ -49,15 +48,15 @@ const registerNewUser = async (req, res, next) => {
 	}
 };
 
-const getUserByUsername = (username) => {
+export const getUserByUsername = (username:string) => {
 	return dummyUsers.find((user) => user.username === username);
 };
 
-const getUserByUserId = (id) => {
-	return dummyUsers.find((user) => user.id === id);
+export const getUserByUserId = (id:string) => {
+	return dummyUsers.find((user) => user.username === id);
 };
 
-const loginUser = (req, res, next)=>{
+export const loginUser = (req, res, next)=>{
 	console.log('attempting log in...');
 	if (req.user.username){
 		console.log(`${req.user.username} succesful`);
@@ -67,12 +66,3 @@ const loginUser = (req, res, next)=>{
 		res.status(400).send({message:"error logging in"});
 	}
 }
-
-module.exports = {
-	getAllUsers,
-	getUserByUsername,
-	getUserByUserId,
-	getGamesByUser,
-	registerNewUser,
-	loginUser,
-};

@@ -90,6 +90,8 @@ const editGameByGameId = (req, res, next) => {
 	const newGameState = req.body.game;
 
 	const gameFromDatabase = TTT_GAMES.find((game) => game.id === gameId);
+	if (gameFromDatabase === null) return res.send({message: "no game found"});
+	
 	gameFromDatabase.game = newGameState;
 
 	res.send({ game: gameFromDatabase });
