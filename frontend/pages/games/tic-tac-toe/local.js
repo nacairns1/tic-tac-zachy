@@ -10,6 +10,8 @@ const TicTacToe = () => {
 		dispatch({ type: "NEW_LOCAL_GAME" });
 	}, []);
 
+
+
 	return (
 		<div className="flex flex-col md:flex-row justify-evenly items-center pt-10">
 			<PlayerSection />

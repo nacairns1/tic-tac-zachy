@@ -39,11 +39,18 @@ const getAllUsers = (req, res, next) => {
 exports.getAllUsers = getAllUsers;
 const getGamesByUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const username = req.body.username;
-    const games = yield prisma.playerEntry.findMany({ where: username });
-    if (games === null) {
-        return next(new Error("no games found"));
+    let games;
+    try {
+        games = yield prisma.playerEntry.findMany({ where: username });
+        if (games === null) {
+            return next(new Error("no games found"));
+        }
     }
-    res.send({ games: games });
+    catch (e) {
+        console.error(e);
+        games = [];
+    }
+    res.send({ username: username, games: games });
 });
 exports.getGamesByUser = getGamesByUser;
 const registerNewUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -55,7 +62,7 @@ const registerNewUser = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         const user = { username: username, password: hashedPassword };
         try {
             const dbUser = yield prisma.user.create({ data: user });
-            return res.redirect('/login', 307);
+            return res.redirect("/login", 307);
         }
         catch (e) {
             console.error(e);
@@ -81,9 +88,9 @@ const loginUser = (req, res, next) => {
     if (req.user === undefined)
         return res.status(400).send({ message: "error" });
     const user = req.user;
-    if (user.username) {
-        console.log(`${req.user.username} succesful`);
-        res.send({ user: req.user.username });
+    if (user.username !== undefined) {
+        console.log(`${user.username} succesful`);
+        res.send({ user: user.username });
     }
     else {
         console.log("unsuccessful");

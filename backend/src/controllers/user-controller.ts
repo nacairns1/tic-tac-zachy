@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { RequestHandler } from "express";
 
-import { PrismaClient } from "@prisma/client";
+import { PlayerEntry, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -32,13 +32,18 @@ export const getAllUsers: RequestHandler = (req, res, next) => {
 export const getGamesByUser: RequestHandler = async (req, res, next) => {
 	const username = req.body.username;
 
-	const games = await prisma.playerEntry.findMany({ where: username });
-
-	if (games === null) {
-		return next(new Error("no games found"));
+	let games: Array<PlayerEntry>; 
+	try {
+		games = await prisma.playerEntry.findMany({ where: username });
+		if (games === null) {
+			return next(new Error("no games found"));
+		}
+	} catch (e) {
+		console.error(e);
+		games = [];
 	}
 
-	res.send({ games: games });
+	res.send({ username: username, games: games });
 };
 
 export const registerNewUser: RequestHandler = async (req, res, next) => {
@@ -51,7 +56,7 @@ export const registerNewUser: RequestHandler = async (req, res, next) => {
 		const user = { username: username, password: hashedPassword };
 		try {
 			const dbUser = await prisma.user.create({ data: user });
-			return res.redirect('/login', 307);
+			return res.redirect("/login", 307);
 		} catch (e) {
 			console.error(e);
 		}
@@ -62,7 +67,7 @@ export const registerNewUser: RequestHandler = async (req, res, next) => {
 };
 
 export const getUserByUsername = async (username: string) => {
-	const user = await prisma.user.findUnique({where: {username}})
+	const user = await prisma.user.findUnique({ where: { username } });
 
 	return user;
 };
@@ -71,13 +76,17 @@ export const getUserByUserId = (id: string) => {
 	return dummyUsers.find((user) => user.username === id);
 };
 
+interface UserInSession extends Express.User {
+	username?: string;
+}
+
 export const loginUser: RequestHandler = (req, res, next) => {
 	console.log("attempting log in...");
 	if (req.user === undefined) return res.status(400).send({ message: "error" });
-	const user = req.user;
-	if (user.username) {
-		console.log(`${req.user.username} succesful`);
-		res.send({ user: req.user.username });
+	const user: UserInSession = req.user;
+	if (user.username !== undefined) {
+		console.log(`${user.username} succesful`);
+		res.send({ user: user.username });
 	} else {
 		console.log("unsuccessful");
 		res.status(400).send({ message: "error logging in" });

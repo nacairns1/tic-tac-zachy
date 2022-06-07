@@ -1,14 +1,14 @@
 import { Fragment, useState, useReducer, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Router from "next/router";
 
 import { useAuthContext } from "../contexts/AuthContext";
-import Router  from "next/router";
+import { NewGameModal } from "../components/NewGameModal";
 
 const navigation = [
 	{ name: "Home", href: "/", current: true },
 	{ name: "Tic-Tac-Toe", href: "#", current: false },
 ];
-
 
 const LightButton = (props) => {
 	return (
@@ -54,13 +54,13 @@ const DarkButton = (props) => {
 
 const themeReducer = (state, action) => {
 	switch (action.type) {
-		case "lemonade":
-			state.theme = "lemonade";
+		case "light":
+			state.theme = "light";
 			document.body.dataset.theme = state.theme;
 			window.localStorage.setItem("theme", state.theme);
 			return { ...state };
-		case "night":
-			state.theme = "night";
+		case "dark":
+			state.theme = "dark";
 			document.body.dataset.theme = state.theme;
 			window.localStorage.setItem("theme", state.theme);
 			return { ...state };
@@ -71,21 +71,21 @@ const themeReducer = (state, action) => {
 
 const NavBar = () => {
 	const { loggedInUser, authDispatch } = useAuthContext();
-	
-
 
 	useEffect(() => {
-		if(!localStorage) return;
+		if (!localStorage) return;
 		const iUser = localStorage.getItem("CURRENT_USER");
-		if (iUser !== null) authDispatch({type: 'LOGIN_SUCCESS', username: iUser});
+		if (iUser !== null)
+			authDispatch({ type: "LOGIN_SUCCESS", username: iUser });
 	}, []);
 
 	const [profileTabOpen, setProfileTabOpen] = useState(false);
-	const [themeState, dispatch] = useReducer(themeReducer, { theme: "night" });
+	const [playTabOpen, setPlayTabOpen] = useState(false);
+	const [modalOpen, setModalOpen] = useState(false);
+	const [themeState, dispatch] = useReducer(themeReducer, { theme: "dark" });
 
-
-	const logoutHandler = useCallback(()=> {
-		authDispatch({type: "LOGOUT"})
+	const logoutHandler = useCallback(() => {
+		authDispatch({ type: "LOGOUT" });
 		setProfileTabOpen(false);
 		Router.push(`/`);
 	});
@@ -97,28 +97,41 @@ const NavBar = () => {
 
 	return (
 		<>
+			<NewGameModal
+				open={modalOpen}
+				onClose={() => {
+					setModalOpen(false);
+				}}
+			/>
 			<div className="navbar bg-base-300">
 				<div className="flex-1">
 					<Link href="/">
 						<a className="btn btn-ghost normal-case text-xl">TTZ</a>
 					</Link>
 				</div>
+				{themeState.theme === "dark" ? (
+					<LightButton
+						onClick={() => {
+							dispatch({ type: "light" });
+						}}
+					/>
+				) : (
+					<DarkButton
+						onClick={() => {
+							dispatch({ type: "dark" });
+						}}
+					/>
+				)}
 				<div className="flex-none">
 					<div className="dropdown dropdown-end">
-						{themeState.theme === "night" ? (
-							<LightButton
-								onClick={() => {
-									dispatch({ type: "lemonade" });
-								}}
-							/>
-						) : (
-							<DarkButton
-								onClick={() => {
-									dispatch({ type: "night" });
-								}}
-							/>
-						)}
-						<label tabIndex="0" className="btn btn-ghost btn-circle">
+						<label
+							tabIndex="0"
+							className="btn btn-ghost btn-circle"
+							onClick={() => {
+								setProfileTabOpen(false);
+								setPlayTabOpen((prev) => !prev);
+							}}
+						>
 							<div className="w-10 rounded-full flex justify-center align-center">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -141,12 +154,24 @@ const NavBar = () => {
 								</svg>
 							</div>
 						</label>
-						<div
-							tabIndex="0"
-							className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow"
-						>
-							<div className="card-body">{/* TODO */}</div>
-						</div>
+						{playTabOpen && (
+							<div
+								tabIndex="0"
+								className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow"
+							>
+								<div className="card-body">
+									<button
+										className="btn btn-ghost"
+										onClick={() => {
+											setPlayTabOpen(false);
+											setModalOpen(true);
+										}}
+									>
+										START NEW GAME!
+									</button>
+								</div>
+							</div>
+						)}
 					</div>
 
 					<div className="dropdown dropdown-end">
@@ -154,6 +179,7 @@ const NavBar = () => {
 							tabIndex="0"
 							className="btn btn-ghost"
 							onClick={() => {
+								setPlayTabOpen(false);
 								setProfileTabOpen((prev) => !prev);
 							}}
 						>
@@ -188,10 +214,17 @@ const NavBar = () => {
 								<li>
 									<Link
 										href={
-											loggedInUser.loggedIn ? `/users/${loggedInUser.username}` : "/users/login"
+											loggedInUser.loggedIn
+												? `/users/${loggedInUser.username}`
+												: "/users/login"
 										}
 									>
-										<button className="btn btn-ghost btn-sm" onClick={()=>{setProfileTabOpen(false)}}>
+										<button
+											className="btn btn-ghost btn-sm"
+											onClick={() => {
+												setProfileTabOpen(false);
+											}}
+										>
 											{loggedInUser.loggedIn ? `Profile` : "Login / Register"}
 										</button>
 									</Link>
@@ -199,7 +232,12 @@ const NavBar = () => {
 
 								{loggedInUser.loggedIn && (
 									<li>
-										<button className="btn btn-ghost btn-sm" onClick={logoutHandler}>Logout</button>
+										<button
+											className="btn btn-ghost btn-sm"
+											onClick={logoutHandler}
+										>
+											Logout
+										</button>
 									</li>
 								)}
 							</ul>

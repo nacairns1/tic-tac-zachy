@@ -15,10 +15,13 @@ const passport_config_1 = require("./passport-config");
 const user_controller_1 = require("./controllers/user-controller");
 require("dotenv").config();
 const secret = process.env.SESSION_SECRET;
-if (secret === undefined) {
-    console.error('No secret key found.');
-}
 (0, passport_config_1.initializePassport)(passport_1.default, user_controller_1.getUserByUsername, user_controller_1.getUserByUserId);
+const secretCheck = () => {
+    if (secret === undefined) {
+        throw Error('undefined secret');
+    }
+};
+secretCheck();
 const port = 5000;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: 'http://localhost:3000' }));
@@ -26,7 +29,7 @@ app.use(body_parser_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, express_flash_1.default)());
 app.use((0, express_session_1.default)({
-    secret: process.env.SESSION_SECRET,
+    secret: secret,
     resave: false,
     saveUninitialized: false,
 }));

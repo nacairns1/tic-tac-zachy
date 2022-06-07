@@ -17,10 +17,6 @@ import { getUserByUsername, getUserByUserId } from './controllers/user-controlle
 
 require("dotenv").config();
 const secret = process.env.SESSION_SECRET;
-if (secret === undefined) {
-	console.error('No secret key found.')
-	
-}
 
 
 initializePassport(
@@ -28,6 +24,12 @@ initializePassport(
 	getUserByUsername,
 	getUserByUserId
 );
+const secretCheck = ()=>{
+	if (secret === undefined) {
+		throw Error('undefined secret');
+	}
+}
+secretCheck();
 
 const port = 5000;
 const app = express();
@@ -36,9 +38,11 @@ app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
+
+//@ts-nocheck
 app.use(
 	session({
-		secret: process.env.SESSION_SECRET,
+		secret: secret,
 		resave: false,
 		saveUninitialized: false,
 	})

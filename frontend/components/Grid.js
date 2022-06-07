@@ -29,7 +29,7 @@ const Grid = (props) => {
   },[numMoves]);
 
 	return (
-		<div className="hero flex flex-row h-[18rem] w-[20rem] md:w-[28rem] md:h-[24rem] lg:w-[36rem] lg:h-[30rem] mx-auto">
+		<div className="hero flex flex-row h-[18rem] w-[20rem] md:w-[28rem] md:h-[24rem] lg:w-[36rem] lg:h-[30rem] xl:h-[36rem] xl:w-[42rem] mx-auto">
 			<div className="hero-content w-full h-full relative">
 				<div className="grid grid-rows-3 grid-cols-3 mx-auto absolute -z-10 w-5/6 h-5/6">
 					<div className="col-span-1 border-4 border-r-black border-l-0 border-t-0 border-b-black" />

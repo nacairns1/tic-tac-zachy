@@ -63,18 +63,18 @@ const getGameById = (req, res, next) => {
 exports.getGameById = getGameById;
 const createNewGame = (req, res, next) => {
     const uniqueGameId = nanoid.nanoid();
-    const player1 = req.body.player1;
-    const player2 = req.body.player2;
+    const player_X = req.body.player_X;
+    const player_O = req.body.player_O;
     const gameToAdd = {
         gameId: uniqueGameId,
         game: [0, 0, 0, 0, 0, 0, 0, 0, 0],
         players: [
             {
-                playerId: player1,
+                playerId: player_X,
                 piece: "x",
             },
             {
-                playerId: player2,
+                playerId: player_O,
                 piece: "o",
             },
         ],
