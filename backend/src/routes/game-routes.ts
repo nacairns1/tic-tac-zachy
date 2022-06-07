@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-const {getAllGames, getGameById, createNewGame, editGameByGameId, deleteGameByGameId} = require('../controllers/game-controller.js')
+import { getAllGames, getGameById, createNewGame, editGameByGameId, deleteGameByGameId } from '../controllers/game-controller.js';
 
 
 //middleware specific to this router
@@ -19,4 +19,5 @@ router.patch('/:gameId', editGameByGameId);
 
 router.delete('/:gameId', deleteGameByGameId); 
 
-module.exports = router;
+
+export default router;

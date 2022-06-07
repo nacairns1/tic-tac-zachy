@@ -19,17 +19,13 @@ const validate = (values) => {
 	} else if (values.password.length > 30) {
 		errors.lastName = "Must be 30 characters or less";
 	}
-
 	return errors;
 };
-
-
-
 
 const LoginForm = (props) => {
 	const [currForm, setCurrForm] = useState("Log in");
 	const [loading, setLoading] = useState(false);
-	const {setLoggedInUser} = useAuthContext();
+	const {authDispatch} = useAuthContext();
 
 	const onRegisterFormSubmit = useCallback(async (data) => {
 		const httpMessageConfig = {
@@ -45,7 +41,8 @@ const LoginForm = (props) => {
 			const res = await axios(httpMessageConfig);
 			let username = res.data.user;
 			console.log(username);
-			setLoggedInUser(username);
+			authDispatch({username: username, type: "LOGIN_SUCCESS"});
+			console.log('successful login')
 			Router.push(`/users/${username}`);
 		} catch (e) {
 
@@ -64,12 +61,12 @@ const LoginForm = (props) => {
 		};
 		try {
 			const res = await axios(httpMessageConfig);
-			console.log(res)
 			let username = res.data.user;
-			setLoggedInUser(username);
+			authDispatch({username: username, type: "LOGIN_SUCCESS"});
+			console.log('successful login')
 			Router.push(`/users/${username}`);
 		} catch (e) {
-
+			console.log('unsuccessful login')
 			formik.isValid = false;
 		}
 	});
@@ -143,5 +140,6 @@ const LoginForm = (props) => {
 		</div>
 	);
 };
+
 
 module.exports = { LoginForm };

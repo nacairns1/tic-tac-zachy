@@ -1,18 +1,27 @@
-const express = require("express");
-const gameRoutes = require("./routes/game-routes");
-const userRoutes = require("./routes/user-routes");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const passport = require("passport");
-const flash = require("express-flash");
-const session = require("express-session");
+import express from "express";
+import gameRoutes from "./routes/game-routes";
+import userRoutes from "./routes/user-routes";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import passport from "passport";
+import flash from "express-flash";
+import session from "express-session";
 
-const initializePassport = require("./passport-config");
 
-const {getUserByUsername, getUserByUserId} = require('./controllers/user-controller');
+
+
+import {initializePassport} from "./passport-config";
+
+import { getUserByUsername, getUserByUserId } from './controllers/user-controller';
 
 require("dotenv").config();
+const secret = process.env.SESSION_SECRET;
+if (secret === undefined) {
+	console.error('No secret key found.')
+	
+}
+
 
 initializePassport(
 	passport,
@@ -41,13 +50,6 @@ app.use(passport.session());
 app.listen(port, () => {
 	console.log("backend up and running");
 });
-
-try {
-	mongoose.connect(process.env.MONGODB_URL);
-	console.log("connected to mongoose");
-} catch {
-	throw console.error();
-}
 
 app.use("/tic-tac-toe", gameRoutes);
 

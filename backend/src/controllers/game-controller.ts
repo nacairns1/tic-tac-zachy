@@ -1,5 +1,6 @@
+import { RequestHandler } from "express";
+
 const nanoid = require("nanoid");
-const Game = require("../schemas/GameSchema");
 
 const TTT_GAMES = [
 	{
@@ -51,18 +52,18 @@ const TTT_GAMES = [
 
 // function for GET / path
 
-const getAllGames = (req, res, next) => {
+export const getAllGames: RequestHandler = (req, res, next) => {
 	res.send({ games: TTT_GAMES });
 };
 
 // function for GET /:id path
-const getGameById = (req, res, next) => {
+export const getGameById: RequestHandler = (req, res, next) => {
 	const id = req.params.id;
 	const game = TTT_GAMES.find((game) => game.id === id);
 	res.send({ game: game });
 };
 
-const createNewGame = (req, res, next) => {
+export const createNewGame: RequestHandler = (req, res, next) => {
 	const uniqueGameId = nanoid.nanoid();
 	const player1 = req.body.player1;
 	const player2 = req.body.player2;
@@ -85,26 +86,19 @@ const createNewGame = (req, res, next) => {
 	res.send({ gameToAdd: gameToAdd });
 };
 
-const editGameByGameId = (req, res, next) => {
+export const editGameByGameId: RequestHandler = (req, res, next) => {
 	const gameId = req.params.gameId;
 	const newGameState = req.body.game;
 
 	const gameFromDatabase = TTT_GAMES.find((game) => game.id === gameId);
-	if (gameFromDatabase === null) return res.send({message: "no game found"});
+	if (gameFromDatabase === undefined) return res.send({message: "no game found"});
 	
 	gameFromDatabase.game = newGameState;
 
 	res.send({ game: gameFromDatabase });
 };
 
-const deleteGameByGameId = (req, res, next) => {
+export const deleteGameByGameId: RequestHandler = (req, res, next) => {
 	res.send({ message: "deleted!" });
 };
 
-module.exports = {
-	getAllGames,
-	getGameById,
-	createNewGame,
-	editGameByGameId,
-	deleteGameByGameId,
-};

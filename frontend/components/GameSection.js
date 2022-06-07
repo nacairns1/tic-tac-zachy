@@ -1,24 +1,29 @@
 import { useState, useCallback, useEffect } from "react";
 import { useTTTContext } from "../contexts/TTTContext";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const GameSection = (props) => {
 	const [displayPiece, setDisplayPiece] = useState(" ");
 	const [displayClassName, setDisplayClassName] = useState(
 		"btn btn-square row-span-1 text-center align-middle bg-transparent h-5/6 w-5/6 border-none"
 	);
+	const { loggedInUser } = useAuthContext();
 	const [victorySquare, setVictorySquare] = useState(false);
 	const [activeGame, setActiveGame] = useState(true);
 	const { gameState, dispatch } = useTTTContext();
 	const { playerPiece } = gameState;
 	const { gameSquareId } = props;
 
-	const clickHandler = () => {
+	const clickHandler = useCallback(() => {
 		if (!activeGame) return;
+		if (!gameState.local) {
+			if (playerPiece === "X" && gameState.playerX.userId !== loggedInUser.username ) return;
+			if (playerPiece === "O" && gameState.playerO.userId !== loggedInUser.username ) return;
+		}
 		dispatch({ type: `SELECT_${playerPiece}`, gameSquareId: gameSquareId });
-	};
+	}, [playerPiece, activeGame]);
 
 	useEffect(() => {
-		if (gameState.board === undefined) return;
 		switch (gameState.board.board[gameSquareId]) {
 			case 0:
 				setDisplayPiece(" ");
@@ -41,7 +46,7 @@ const GameSection = (props) => {
 			default:
 				break;
 		}
-	}, [gameState.board]);
+	}, [gameState]);
 
 	useEffect(() => {
 		if (gameState.winning_squares === undefined) return;

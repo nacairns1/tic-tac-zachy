@@ -4,7 +4,7 @@ const User = (props) => {
 	const user = props.user;
 	return (
 		<div>
-			<div>{user} Screen</div>
+			<div>{user.username}</div>
 			<div>
                 Active Games: 
             </div>

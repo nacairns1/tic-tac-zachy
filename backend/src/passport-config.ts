@@ -1,10 +1,11 @@
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
+import { PassportStatic } from 'passport';
 
 
-const initialize =  (passport, getUserByUsername, getUserById) => {
-    const authenticateUser = async (username, password, done) => {
-        const user = getUserByUsername(username)
+export const initializePassport =  (passport:PassportStatic, getUserByUsername: Function, getUserById: Function) => {
+    const authenticateUser = async (username:string, password:string, done: Function) => {
+        const user = await getUserByUsername(username)
         if (user == null) {
             return done(null, false, {message: 'login failed'})
         }
@@ -21,12 +22,11 @@ const initialize =  (passport, getUserByUsername, getUserById) => {
 
     }
 
+
     passport.use(new LocalStrategy({usernameField: 'username'}, authenticateUser))
     passport.serializeUser((user,done) => {
         done(null, user) });
-    passport.deserializeUser((user,done) => { 
+    passport.deserializeUser((user: Express.User,done) => { 
         done(null, user)
     });
 };
-
-module.exports = initialize;

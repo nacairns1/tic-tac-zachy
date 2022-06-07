@@ -3,23 +3,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type GamesPlayers {
-  id    String @map("_id") @db.ObjectId
-  piece String
+generator client {
+  provider = "prisma-client-js"
 }
 
-model games {
-  id      String         @id @default(auto()) @map("_id") @db.ObjectId
-  v       Int            @map("__v")
-  game    Int[]
-  gameId  String
-  players GamesPlayers[]
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique
+  password String
+  ongoingGames PlayerEntry[]
 }
 
-model users {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  v        Int    @map("__v")
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  games    Json?
+model PlayerEntry {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  boardId String 
+  user User @relation(fields: [username], references: [username])
   username String
+  piece String
+  gameId String
+  game Game @relation(fields: [gameId], references: [id])
+  
+  @@unique([boardId, username])
+}
+
+model Game {
+  id      String         @id @default(auto()) @map("_id") @db.ObjectId
+  gameState Int[]
+  gameType String
+  players PlayerEntry[]
+  moveNumber Int
+  active Boolean
+  outcome String?
 }

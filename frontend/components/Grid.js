@@ -14,7 +14,7 @@ const Grid = (props) => {
 	for (let i = 0; i < 9; i++) {
 		squares.push(
 			<div
-				key={`div for ${i}`}
+				key={`grid square ${i}`}
 				className="flex justify-center items-center col-span-1"
 			>
 				<GameSection key={`Square ${i}`} gameSquareId={i} />

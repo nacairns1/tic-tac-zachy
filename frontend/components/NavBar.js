@@ -1,16 +1,14 @@
-import { Fragment, useState, useReducer, useEffect, useContext } from "react";
+import { Fragment, useState, useReducer, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 import { useAuthContext } from "../contexts/AuthContext";
+import Router  from "next/router";
 
 const navigation = [
 	{ name: "Home", href: "/", current: true },
 	{ name: "Tic-Tac-Toe", href: "#", current: false },
 ];
 
-function classNames(...classes) {
-	return classes.filter(Boolean).join(" ");
-}
 
 const LightButton = (props) => {
 	return (
@@ -72,9 +70,25 @@ const themeReducer = (state, action) => {
 };
 
 const NavBar = () => {
-	const { loggedInUser } = useAuthContext();
+	const { loggedInUser, authDispatch } = useAuthContext();
+	
+
+
+	useEffect(() => {
+		if(!localStorage) return;
+		const iUser = localStorage.getItem("CURRENT_USER");
+		if (iUser !== null) authDispatch({type: 'LOGIN_SUCCESS', username: iUser});
+	}, []);
+
 	const [profileTabOpen, setProfileTabOpen] = useState(false);
 	const [themeState, dispatch] = useReducer(themeReducer, { theme: "night" });
+
+
+	const logoutHandler = useCallback(()=> {
+		authDispatch({type: "LOGOUT"})
+		setProfileTabOpen(false);
+		Router.push(`/`);
+	});
 
 	useEffect(() => {
 		const savedTheme = window.localStorage.getItem("theme");
@@ -145,7 +159,7 @@ const NavBar = () => {
 						>
 							<div className="flex items-center">
 								<label className="text-sm italic font-semibold">
-									{loggedInUser}
+									{loggedInUser.username}
 								</label>
 							</div>
 							<div className="w-10 rounded-full flex justify-center align-center">
@@ -174,18 +188,18 @@ const NavBar = () => {
 								<li>
 									<Link
 										href={
-											loggedInUser ? `/users/${loggedInUser}` : "/users/login"
+											loggedInUser.loggedIn ? `/users/${loggedInUser.username}` : "/users/login"
 										}
 									>
-										<a className="justify-between">
-											{loggedInUser ? `Profile` : "Login / Register"}
-										</a>
+										<button className="btn btn-ghost btn-sm" onClick={()=>{setProfileTabOpen(false)}}>
+											{loggedInUser.loggedIn ? `Profile` : "Login / Register"}
+										</button>
 									</Link>
 								</li>
 
-								{loggedInUser && (
+								{loggedInUser.loggedIn && (
 									<li>
-										<a>Logout</a>
+										<button className="btn btn-ghost btn-sm" onClick={logoutHandler}>Logout</button>
 									</li>
 								)}
 							</ul>

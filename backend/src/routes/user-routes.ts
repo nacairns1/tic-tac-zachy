@@ -6,12 +6,12 @@ import { getAllUsers, registerNewUser, getGamesByUser, loginUser } from "../cont
 
 const router = express.Router();
 
-router.get("/", getAllUsers);
-
-router.get("/:username", getGamesByUser);
+router.get("/games", getGamesByUser);
 
 router.post("/register", registerNewUser);
 
 router.post("/login", passport.authenticate("local", {}), loginUser);
 
-module.exports = router;
+router.get("/", getAllUsers);
+
+export default router;

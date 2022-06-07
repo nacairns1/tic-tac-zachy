@@ -13,10 +13,9 @@ const TicTacToe = (props) => {
 	
 	useEffect(()=>{
 		dispatch({type: 'LOAD_GAME', game: game});
-		console.log(game)
+	
 	}, []);
 
-	useEffect(()=>{console.log(gameState)},[gameState])
 	
 	return (
 		<div className="flex flex-col md:flex-row justify-evenly items-center pt-10">
@@ -61,7 +60,6 @@ TicTacToe.getInitialProps = async(ctx) => {
 	
 	const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
 	const json = await res.json();
-	console.log(json);
 	const {game} = json;
 	return {game}
 }
