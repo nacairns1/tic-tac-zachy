@@ -48,14 +48,14 @@ export const createNewGame: RequestHandler = (req, res, next) => {
 	res.send({ gameToAdd: gameToAdd });
 };
 
-export const editGameByGameId: RequestHandler = (req, res, next) => {
+export const editGameByGameId: RequestHandler = async (req, res, next) => {
 	const gameId = req.params.gameId;
 	const newGameState = req.body.game;
 
-	const gameFromDatabase = TTT_GAMES.find((game) => game.id === gameId);
-	if (gameFromDatabase === undefined) return res.send({message: "no game found"});
+	const gameFromDatabase = await prisma.game.findUnique({where: {id: gameId}});
+	if (gameFromDatabase === null) return res.send({message: "no game found"});
 	
-	gameFromDatabase.game = newGameState;
+	gameFromDatabase.gameState= newGameState;
 
 	res.send({ game: gameFromDatabase });
 };
