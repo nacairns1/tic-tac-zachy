@@ -4,8 +4,6 @@ import { TTTQueue } from "../user-queue/ttt-queue";
 import { Game } from "@prisma/client";
 import { User } from "@prisma/client";
 
-const nanoid = require("nanoid");
-
 const prisma = new PrismaClient();
 
 const playerQueue = new TTTQueue();

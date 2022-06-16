@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from "express";
 import gameRoutes from "./routes/game-routes";
 import userRoutes from "./routes/user-routes";
@@ -24,12 +25,6 @@ initializePassport(
 	getUserByUsername,
 	getUserByUserId
 );
-const secretCheck = ()=>{
-	if (secret === undefined) {
-		throw Error('undefined secret');
-	}
-}
-secretCheck();
 
 const port = 5000;
 const app = express();
@@ -39,7 +34,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 
-//@ts-nocheck
 app.use(
 	session({
 		secret: secret,

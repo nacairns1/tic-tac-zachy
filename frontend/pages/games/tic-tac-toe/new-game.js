@@ -7,6 +7,8 @@ const NewGame = (props) => {
 	const [user, setUser] = useState();
 	const [games, setGames] = useState();
 
+	
+
 
 	return (
 		<div>

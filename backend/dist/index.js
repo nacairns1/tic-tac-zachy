@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// @ts-nocheck
 const express_1 = __importDefault(require("express"));
 const game_routes_1 = __importDefault(require("./routes/game-routes"));
 const user_routes_1 = __importDefault(require("./routes/user-routes"));
@@ -16,12 +17,6 @@ const user_controller_1 = require("./controllers/user-controller");
 require("dotenv").config();
 const secret = process.env.SESSION_SECRET;
 (0, passport_config_1.initializePassport)(passport_1.default, user_controller_1.getUserByUsername, user_controller_1.getUserByUserId);
-const secretCheck = () => {
-    if (secret === undefined) {
-        throw Error('undefined secret');
-    }
-};
-secretCheck();
 const port = 5000;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: 'http://localhost:3000' }));

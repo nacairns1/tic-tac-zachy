@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import { Dialog } from "@headlessui/react";
 import Router from "next/router";
-
+import { Formik } from "formik";
 function GameBuilderForm(props) {
 	const [xClassState, setXClassState] = useState("btn btn-primary btn-info");
 	const [oClassState, setOClassState] = useState("btn btn-primary btn-error");

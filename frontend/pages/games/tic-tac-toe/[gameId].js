@@ -6,21 +6,19 @@ import { Router } from "next/router";
 
 const TicTacToe = (props) => {
 	const { gameState, dispatch } = useTTTContext();
-	const [playerX, setPlayerX] = useState('. . .');
-	const [playerO, setPlayerO] = useState('. . .');
-	const {game} =props;
+	const [playerX, setPlayerX] = useState(". . .");
+	const [playerO, setPlayerO] = useState(". . .");
+
+	const { game } = props;
 	const { playerPiece } = gameState;
-	
-	useEffect(()=>{
-		dispatch({type: 'LOAD_GAME', game: game});
-	
+
+	useEffect(() => {
+		dispatch({ type: "LOAD_GAME", game: game });
 	}, []);
 
-	
 	return (
 		<div className="flex flex-col md:flex-row justify-evenly items-center pt-10">
-			
-			<PlayerSection playerX={playerX.userId} playerO={playerO.userId}/>
+			<PlayerSection playerX={playerX.userId} playerO={playerO.userId} />
 
 			<Grid />
 
@@ -54,14 +52,13 @@ const TicTacToe = (props) => {
 	);
 };
 
-TicTacToe.getInitialProps = async(ctx) => {
-	
-	const {gameId} = ctx.query
-	
+TicTacToe.getInitialProps = async (ctx) => {
+	const { gameId } = ctx.query;
+
 	const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
 	const json = await res.json();
-	const {game} = json;
-	return {game}
-}
+	const { game } = json;
+	return { game };
+};
 
 export default TicTacToe;
