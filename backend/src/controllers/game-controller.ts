@@ -18,34 +18,49 @@ export const getAllGames: RequestHandler = (req, res, next) => {
 	// res.send({ games: TTT_GAMES });
 };
 
-// function for GET /:id path
-export const getGameById: RequestHandler = (req, res, next) => {
+/** function for GET /:id path */
+export const getGameById: RequestHandler = async (req, res, next) => {
 	const id = req.params.id;
-	// const game = TTT_GAMES.find((game) => game.id === id);
-	// res.send({ game: game });
+	const game = await prisma.game.findUnique({where: {id}});
+
+	if (game === null) {
+		res.send({message: "no game found"});
+		return;
+	}
+
+	res.send({ game });
 };
 
-export const createNewGame: RequestHandler = (req, res, next) => {
-	const uniqueGameId = nanoid.nanoid();
+export const createNewGame: RequestHandler = async (req, res, next) => {
 	const player_X = req.body.player_X;
 	const player_O = req.body.player_O;
 
-	const gameToAdd = {
-		gameId: uniqueGameId,
-		game: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		players: [
-			{
-				playerId: player_X,
-				piece: "x",
-			},
-			{
-				playerId: player_O,
-				piece: "o",
-			},
-		],
-	};
+	let new_game = await prisma.game.create({data: {
+		gameState: [0,0,0,0,0,0,0,0,0],
+		moveNumber: 0,
+		gameType: "Tic-Tac-Toe",
+		active: true,
+	}});
 
-	res.send({ gameToAdd: gameToAdd });
+	let player_O_entry = prisma.playerEntry.create({
+		data: {
+			username: player_O.username,
+			gameId: new_game.id,
+			piece: "O",
+		}
+	});
+
+	let player_X_entry = prisma.playerEntry.create({
+		data: {
+			username: player_X.username,
+			gameId: new_game.id,
+			piece: "X",
+		}
+	});
+
+	await prisma.$transaction([player_O_entry, player_X_entry]);
+
+	res.send({ game: new_game });
 };
 
 export const editGameByGameId: RequestHandler = async (req, res, next) => {
