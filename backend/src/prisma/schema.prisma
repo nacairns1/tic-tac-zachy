@@ -16,14 +16,13 @@ model User {
 
 model PlayerEntry {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  boardId String 
   user User @relation(fields: [username], references: [username])
   username String
   piece String
   gameId String
   game Game @relation(fields: [gameId], references: [id])
   
-  @@unique([boardId, username])
+  @@unique([gameId, username])
 }
 
 model Game {

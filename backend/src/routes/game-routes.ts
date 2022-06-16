@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-import { getAllGames, getGameById, createNewGame, editGameByGameId, deleteGameByGameId } from '../controllers/game-controller.js';
+import { getAllGames, getGameById, createNewGame, editGameByGameId, deleteGameByGameId, joinGameQueue } from '../controllers/game-controller.js';
 
 
 //middleware specific to this router
@@ -13,7 +13,9 @@ router.get('/', getAllGames);
 
 router.get('/:id', getGameById);
 
-router.post('/new-game', createNewGame);
+router.post('/new_game/random_user', joinGameQueue);
+
+router.post('/new_game/invite', createNewGame);
 
 router.patch('/:gameId', editGameByGameId);
 
