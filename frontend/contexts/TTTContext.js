@@ -5,7 +5,7 @@ import Router from "next/router";
 const TTTContext = createContext();
 
 const gameStateReducer = (state, action) => {
-	const { gameSquareId, piece, game } = action;
+	const { gameSquareId, piece, game, players } = action;
     let squares;
 	switch (action.type) {
 		case "SELECT_X":
@@ -16,7 +16,7 @@ const gameStateReducer = (state, action) => {
                 state.winning_squares = squares;
             }
 			state.playerPiece = "O";
-            state.numMoves++;
+            state.moveNumber++;
 			return { ...state };
 		case "SELECT_O":
 			if (!state.board.isEmpty(gameSquareId)) return { ...state };
@@ -26,7 +26,7 @@ const gameStateReducer = (state, action) => {
                 state.winning_squares = squares;
             }
 			state.playerPiece = "X";
-            state.numMoves++;
+            state.moveNumber++;
 			return { ...state };
         case "DRAW":
             state.draw = true;
@@ -41,7 +41,7 @@ const gameStateReducer = (state, action) => {
 			state.x_victory = false;
             state.draw = false;
             state.winning_squares = [];
-            state.numMoves=0;
+            state.moveNumber=0;
 			return {...state};
 		case "NEW_GAME":
 			state.board.clear();
@@ -50,7 +50,7 @@ const gameStateReducer = (state, action) => {
 			state.x_victory = false;
             state.draw = false;
             state.winning_squares = [];
-            state.numMoves=0;
+            state.moveNumber=0;
 			return { ...state };
 		case "PLAYER_BUTTON":
 			return { ...state, playerPiece: piece };
@@ -59,8 +59,9 @@ const gameStateReducer = (state, action) => {
 			state.board = new Board();
 			state.local = false;
 			state.board.loadBoard(game.gameState);
-			state.playerX = game.players[0];
-			state.playerO = game.players[1];
+			state.playerPiece = game.activePiece;
+			state.playerX = players.players.find((player) => player.piece === "X").username;
+			state.playerO = players.players.find((player) => player.piece === "O").username;
 			if(state.board.isSolvedO) {
 				state.winning_squares = state.board.winning_squares;
 				state.o_victory = true;
@@ -84,7 +85,7 @@ const TTTWrapper = ({ children }) => {
         draw: false,
 		playerPiece: "X",
 		winning_squares: [],
-        numMoves: 0,
+        moveNumber: 0,
 		local: false
 	});
 	const gameContextValue = () => {

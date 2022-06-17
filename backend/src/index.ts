@@ -2,6 +2,7 @@
 import express from "express";
 import gameRoutes from "./routes/game-routes";
 import userRoutes from "./routes/user-routes";
+import playerEntryRoutes from './routes/player-entry-routes';
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -29,7 +30,7 @@ initializePassport(
 const port = 5000;
 const app = express();
 
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({origin: '*'}));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
@@ -52,3 +53,5 @@ app.listen(port, () => {
 app.use("/tic-tac-toe", gameRoutes);
 
 app.use("/users", userRoutes);
+
+app.use("/player-entries", playerEntryRoutes);

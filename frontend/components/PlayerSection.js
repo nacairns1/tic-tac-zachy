@@ -12,8 +12,9 @@ const PlayerSection = (props) => {
     useEffect(()=>{
         
         if(!(playerX && playerO)) return;
-        setPlayerXUserId(playerX.userId);
-        setPlayerOUserId(playerO.userId);
+        setPlayerXUserId(playerX);
+        setPlayerOUserId(playerO);
+		
     },[playerO, playerX]);
     
 

@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { useTTTContext } from "../contexts/TTTContext";
 import { useAuthContext } from "../contexts/AuthContext";
+import Router from "next/router";
+import axios from "axios";
 
 const GameSection = (props) => {
 	const [displayPiece, setDisplayPiece] = useState(" ");
@@ -14,14 +16,36 @@ const GameSection = (props) => {
 	const { playerPiece } = gameState;
 	const { gameSquareId } = props;
 
-	const clickHandler = useCallback(() => {
+	const clickHandler = useCallback(async () => {
 		if (!activeGame) return;
 		if (!gameState.local) {
-			if (playerPiece === "X" && gameState.playerX.userId !== loggedInUser.username ) return;
-			if (playerPiece === "O" && gameState.playerO.userId !== loggedInUser.username ) return;
+			if (playerPiece === "X" && gameState.playerX !== loggedInUser.username)
+				return;
+			if (playerPiece === "O" && gameState.playerO !== loggedInUser.username)
+				return;
 		}
 		dispatch({ type: `SELECT_${playerPiece}`, gameSquareId: gameSquareId });
 	}, [playerPiece, activeGame]);
+
+	const updateDB = useCallback(async () => {
+		if (!gameState.local) {
+			try {
+				let gameId = Router.asPath.split("/").pop();
+				const httpMessageConfig = {
+					method: "patch",
+					url: `http://localhost:5000/tic-tac-toe/${gameId}`,
+					data: {
+						activePiece: gameState.playerPiece,
+						gameState: gameState.board.board,
+						moveNumber: gameState.moveNumber + 1,
+					},
+				};
+				await axios(httpMessageConfig);
+			} catch (e) {
+				return;
+			}
+		}
+	}, [gameState]);
 
 	useEffect(() => {
 		switch (gameState.board.board[gameSquareId]) {
@@ -81,7 +105,13 @@ const GameSection = (props) => {
 	}, [gameState.draw]);
 
 	return (
-		<button className={displayClassName} onClick={clickHandler}>
+		<button
+			className={displayClassName}
+			onClick={async () => {
+				await clickHandler();
+				await updateDB();
+			}}
+		>
 			{displayPiece}
 		</button>
 	);

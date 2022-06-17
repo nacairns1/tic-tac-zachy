@@ -10,15 +10,16 @@ const TicTacToe = (props) => {
 	const [playerO, setPlayerO] = useState(". . .");
 
 	const { game } = props;
+	const { players } = props;
 	const { playerPiece } = gameState;
 
 	useEffect(() => {
-		dispatch({ type: "LOAD_GAME", game: game });
+		dispatch({ type: "LOAD_GAME", game: game, players: players });
 	}, []);
 
 	return (
 		<div className="flex flex-col md:flex-row justify-evenly items-center pt-10">
-			<PlayerSection playerX={playerX.userId} playerO={playerO.userId} />
+			<PlayerSection playerX={playerX} playerO={playerO} />
 
 			<Grid />
 
@@ -56,9 +57,11 @@ TicTacToe.getInitialProps = async (ctx) => {
 	const { gameId } = ctx.query;
 
 	const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
+	const players_res = await fetch(`http://localhost:5000/player-entries/${gameId}`);
+	const players = await players_res.json();
 	const json = await res.json();
 	const { game } = json;
-	return { game };
+	return { game, players };
 };
 
 export default TicTacToe;

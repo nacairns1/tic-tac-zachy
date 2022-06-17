@@ -7,7 +7,7 @@ import { useEffect } from "react";
 const Grid = (props) => {
 	const { gameState, dispatch } = useTTTContext();
 
-  const {numMoves} = gameState;
+    const {numMoves} = gameState;
 
 	const squares = [];
 
@@ -27,6 +27,7 @@ const Grid = (props) => {
       dispatch({type: "DRAW"});
     }
   },[numMoves]);
+  
 
 	return (
 		<div className="hero flex flex-row h-[18rem] w-[20rem] md:w-[28rem] md:h-[24rem] lg:w-[36rem] lg:h-[30rem] xl:h-[36rem] xl:w-[42rem] mx-auto">
@@ -46,8 +47,6 @@ const Grid = (props) => {
 					{squares}
 				</div>
 			</div>
-
-			{/* <Modal /> */}
 		</div>
 	);
 };
