@@ -6,8 +6,6 @@ import axios from "axios";
 
 const validate = (values) => {
 	const errors = {};
-
-	console.log(values);
 	if (!values.username) {
 		errors.username = "Required";
 	} 
@@ -22,6 +20,7 @@ function GameBuilderForm(props) {
 	const [player1, setPlayer1] = useState('');
 	
 	const [chosenPlayerPiece, setChosenPlayerPiece] = useState('X');
+	const [playerCreateError, setPlayerCreateError] = useState(false);
 	const [xClassState, setXClassState] = useState("btn btn-primary btn-info");
 	const [oClassState, setOClassState] = useState("btn btn-primary btn-error");
 
@@ -46,7 +45,6 @@ function GameBuilderForm(props) {
 		};
 		try {
 			const res = await axios(httpMessageConfig);
-			console.log(res);
 			Router.push(`./${res.data.game.id}`);
 		} catch (e) {
 			console.error(e);

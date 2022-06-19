@@ -15,7 +15,7 @@ const TicTacToe = (props) => {
 	useEffect(() => {
 		dispatch({ type: "LOAD_GAME", game: game, players: players });
 	}, []);
-
+	
 	useEffect(() => {
 		async function fetchDataInterval(gameId) {
 			const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
@@ -30,8 +30,8 @@ const TicTacToe = (props) => {
 		}
 
 		const interval = setInterval(() => {
-			fetchDataInterval(props.gameId)
-		}, 5000);
+			if (!(gameState.x_victory || gameState.o_victory))fetchDataInterval(props.gameId)
+		}, 1000);
 
 		return () => clearInterval(interval);
 

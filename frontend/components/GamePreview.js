@@ -31,7 +31,7 @@ const gamePreview = (props) => {
 	const players = props.game.players;
 	return (
 		<Link href={`/games/tic-tac-toe/${id}`}>
-			<div className="card w-1/4 bg-base-100 border" key={`${id}-${outerId++}`}>
+			<div className="card bg-base-100 border" key={`${id}-${outerId++}`}>
 				<div className="min-h-[10rem] grid grid-cols-3 grid-rows-3">
 					{renderGame(gameState, id)}
 				</div>

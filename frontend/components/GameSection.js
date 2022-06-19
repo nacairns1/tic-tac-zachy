@@ -28,7 +28,7 @@ const GameSection = (props) => {
 	}, [playerPiece, activeGame]);
 
 	const updateDB = useCallback(async () => {
-		if (!gameState.local) {
+		if (!gameState.local && !(gameState.x_victory || gameState.o_victory)) {
 			try {
 				let gameId = Router.asPath.split("/").pop();
 				const httpMessageConfig = {
@@ -38,6 +38,7 @@ const GameSection = (props) => {
 						activePiece: gameState.playerPiece,
 						gameState: gameState.board.board,
 						moveNumber: gameState.moveNumber + 1,
+						active: !(gameState.x_victory || gameState.o_victory),
 					},
 				};
 				await axios(httpMessageConfig);
@@ -79,6 +80,7 @@ const GameSection = (props) => {
 			setActiveGame(false);
 		} else {
 			setActiveGame(true);
+
 		}
 	}, [gameState.winning_squares]);
 
