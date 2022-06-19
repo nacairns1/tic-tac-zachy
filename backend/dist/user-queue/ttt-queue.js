@@ -19,6 +19,7 @@ class TTTQueue {
         if (this.queue.length === newQueue.length)
             return;
         this.queue = newQueue;
+        return user;
     }
 }
 exports.TTTQueue = TTTQueue;

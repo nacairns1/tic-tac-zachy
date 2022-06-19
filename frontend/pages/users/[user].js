@@ -36,7 +36,7 @@ const User = (props) => {
 				<div className="w-full flex flex-row justify-center items-center">
 					<div className="py-10 flex justify-center gap-10 flex-wrap">
 						{games === undefined || games.length === 0
-							? "No Games Found!"
+							? "Loading in games!"
 							: games.reverse().filter((game) => game.active).map((game) => <GamePreview game={game} key={game.id} />)}
 					</div>
 				</div>

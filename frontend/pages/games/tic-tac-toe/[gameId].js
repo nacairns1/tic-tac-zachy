@@ -15,7 +15,7 @@ const TicTacToe = (props) => {
 	useEffect(() => {
 		dispatch({ type: "LOAD_GAME", game: game, players: players });
 	}, []);
-	
+
 	useEffect(() => {
 		async function fetchDataInterval(gameId) {
 			const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
@@ -26,15 +26,18 @@ const TicTacToe = (props) => {
 			const json = await res.json();
 			const { game } = json;
 
-			dispatch({type: "LOAD_GAME", game, players});
+			dispatch({ type: "LOAD_GAME", game, players });
 		}
 
 		const interval = setInterval(() => {
-			if (!(gameState.x_victory || gameState.o_victory))fetchDataInterval(props.gameId)
+			if (!(gameState.x_victory || gameState.o_victory)) {
+				fetchDataInterval(props.gameId);
+			} else {
+				
+			}
 		}, 1000);
 
 		return () => clearInterval(interval);
-
 	}, []);
 
 	return (

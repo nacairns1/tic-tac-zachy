@@ -7,6 +7,8 @@ import { User } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const playerQueue = new TTTQueue();
+const randomQueueGames = new Map<string, string>();
+
 
 //all functions for /tic-tac-toe
 
@@ -203,29 +205,30 @@ export const deleteGameByGameId: RequestHandler = (req, res, next) => {
 
 export const joinGameQueue: RequestHandler = async (req, res, next) => {
 	const new_user = req.body.username;
-	if (playerQueue.length() > 0) {
-		let newGame = await startNewRandomGame(new_user);
-		res.send({ gameId: newGame });
-
-		return;
-	}
-
 	let user = await prisma.user.findUnique({
-		where: { username: new_user.username },
+		where: { username: new_user },
 	});
 	if (user === null) {
 		res.send({ message: "user not found" });
 		return;
 	}
+	if (playerQueue.length() > 0) {
+		let newGame = await startNewRandomGame(user);
+		res.send({ gameId: newGame });
+		return;
+	}
 
+	
+	
 	playerQueue.addToQueue(user);
 	res.send({ message: "user added to queue" });
 };
 
 const startNewRandomGame = async (user1: User) => {
+	console.log(playerQueue);
 	if (playerQueue.length() === 0) {
 		playerQueue.addToQueue(user1);
-		return undefined;
+		return;
 	}
 	let user2 = playerQueue.firstInQueue();
 
@@ -253,8 +256,10 @@ const startNewRandomGame = async (user1: User) => {
 		},
 	});
 
+	
+
 	if (game_addition === undefined) {
-		return undefined;
+		return;
 	}
 
 	let player_O_entry = prisma.playerEntry.create({
@@ -273,6 +278,8 @@ const startNewRandomGame = async (user1: User) => {
 		},
 	});
 
+	randomQueueGames.set(player_X.username, game_addition.id);
+
 	try {
 		await prisma.$transaction([player_O_entry, player_X_entry]);
 	} catch (e) {
@@ -280,5 +287,38 @@ const startNewRandomGame = async (user1: User) => {
 		return undefined;
 	}
 
+
 	return game_addition.id;
 };
+
+export const leaveGameQueue:RequestHandler =  async (req, res, next) => {
+	const playerToRemove = req.body.username;
+
+	let user = await prisma.user.findUnique({
+		where: { username: playerToRemove },
+	});
+	if (user === null) {
+		res.send({ message: "user not found" });
+		return;
+	}
+
+	let leaveQueueResult = playerQueue.removeUserFromQueue(user);
+
+	if (leaveGameQueue === undefined ) {
+		res.send({message: "User not found in queue"});
+		return;
+	} else {
+		res.send({message: "User removed from queue"});
+	}
+}
+
+export const getQueueState: RequestHandler = async (req, res, next) => {
+	const playerToSearch = req.body.username;
+	if (randomQueueGames.get(playerToSearch) !== undefined) {
+		res.send({gameId: randomQueueGames.get(playerToSearch)});
+		return;
+	} else {
+		res.send({message: "No game found yet."});
+		return;
+	}
+}

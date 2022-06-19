@@ -12,6 +12,8 @@ router.get('/', game_controller_js_1.getAllGames);
 router.get('/:id', game_controller_js_1.getGameById);
 router.post('/new_game/random_user', game_controller_js_1.joinGameQueue);
 router.post('/new_game/invite', game_controller_js_1.createNewGame);
+router.post('/new_game/queue_status', game_controller_js_1.getQueueState);
+router.post('/new_game/leave_queue', game_controller_js_1.leaveGameQueue);
 router.patch('/:gameId', game_controller_js_1.editGameByGameId);
 router.delete('/:gameId', game_controller_js_1.deleteGameByGameId);
 exports.default = router;

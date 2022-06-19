@@ -9,11 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.joinGameQueue = exports.deleteGameByGameId = exports.editGameByGameId = exports.createNewGame = exports.getGameById = exports.getAllGames = void 0;
+exports.getQueueState = exports.leaveGameQueue = exports.joinGameQueue = exports.deleteGameByGameId = exports.editGameByGameId = exports.createNewGame = exports.getGameById = exports.getAllGames = void 0;
 const client_1 = require("@prisma/client");
 const ttt_queue_1 = require("../user-queue/ttt-queue");
 const prisma = new client_1.PrismaClient();
 const playerQueue = new ttt_queue_1.TTTQueue();
+const randomQueueGames = new Map();
 //all functions for /tic-tac-toe
 // function for GET / path
 const getAllGames = (req, res, next) => {
@@ -197,16 +198,16 @@ const deleteGameByGameId = (req, res, next) => {
 exports.deleteGameByGameId = deleteGameByGameId;
 const joinGameQueue = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const new_user = req.body.username;
-    if (playerQueue.length() > 0) {
-        let newGame = yield startNewRandomGame(new_user);
-        res.send({ gameId: newGame });
-        return;
-    }
     let user = yield prisma.user.findUnique({
-        where: { username: new_user.username },
+        where: { username: new_user },
     });
     if (user === null) {
         res.send({ message: "user not found" });
+        return;
+    }
+    if (playerQueue.length() > 0) {
+        let newGame = yield startNewRandomGame(user);
+        res.send({ gameId: newGame });
         return;
     }
     playerQueue.addToQueue(user);
@@ -214,9 +215,10 @@ const joinGameQueue = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.joinGameQueue = joinGameQueue;
 const startNewRandomGame = (user1) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(playerQueue);
     if (playerQueue.length() === 0) {
         playerQueue.addToQueue(user1);
-        return undefined;
+        return;
     }
     let user2 = playerQueue.firstInQueue();
     let player_O = user1;
@@ -241,7 +243,7 @@ const startNewRandomGame = (user1) => __awaiter(void 0, void 0, void 0, function
         },
     });
     if (game_addition === undefined) {
-        return undefined;
+        return;
     }
     let player_O_entry = prisma.playerEntry.create({
         data: {
@@ -257,6 +259,7 @@ const startNewRandomGame = (user1) => __awaiter(void 0, void 0, void 0, function
             piece: "X",
         },
     });
+    randomQueueGames.set(player_X.username, game_addition.id);
     try {
         yield prisma.$transaction([player_O_entry, player_X_entry]);
     }
@@ -266,3 +269,34 @@ const startNewRandomGame = (user1) => __awaiter(void 0, void 0, void 0, function
     }
     return game_addition.id;
 });
+const leaveGameQueue = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const playerToRemove = req.body.username;
+    let user = yield prisma.user.findUnique({
+        where: { username: playerToRemove },
+    });
+    if (user === null) {
+        res.send({ message: "user not found" });
+        return;
+    }
+    let leaveQueueResult = playerQueue.removeUserFromQueue(user);
+    if (exports.leaveGameQueue === undefined) {
+        res.send({ message: "User not found in queue" });
+        return;
+    }
+    else {
+        res.send({ message: "User removed from queue" });
+    }
+});
+exports.leaveGameQueue = leaveGameQueue;
+const getQueueState = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const playerToSearch = req.body.username;
+    if (randomQueueGames.get(playerToSearch) !== undefined) {
+        res.send({ gameId: randomQueueGames.get(playerToSearch) });
+        return;
+    }
+    else {
+        res.send({ message: "No game found yet." });
+        return;
+    }
+});
+exports.getQueueState = getQueueState;

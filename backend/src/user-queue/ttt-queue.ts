@@ -29,5 +29,6 @@ export class TTTQueue implements Queue<User>{
         let newQueue = this.queue.filter(u => u.username !== user.username);
         if (this.queue.length === newQueue.length) return;
         this.queue = newQueue;
+        return user
     }
 }

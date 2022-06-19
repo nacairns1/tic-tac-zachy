@@ -28,7 +28,7 @@ const GameSection = (props) => {
 	}, [playerPiece, activeGame]);
 
 	const updateDB = useCallback(async () => {
-		if (!gameState.local && !(gameState.x_victory || gameState.o_victory)) {
+		if (!gameState.local) {
 			try {
 				let gameId = Router.asPath.split("/").pop();
 				const httpMessageConfig = {
