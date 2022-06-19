@@ -7,7 +7,7 @@ import { useEffect } from "react";
 const Grid = (props) => {
 	const { gameState, dispatch } = useTTTContext();
 
-    const {numMoves} = gameState;
+    const {moveNumber} = gameState;
 
 	const squares = [];
 
@@ -23,10 +23,10 @@ const Grid = (props) => {
 	}
 
   useEffect(()=>{
-    if (numMoves === 9 && (gameState.x_victory === gameState.o_victory)) {
+    if (moveNumber === 9 && (gameState.x_victory === gameState.o_victory)) {
       dispatch({type: "DRAW"});
     }
-  },[numMoves]);
+  },[moveNumber]);
   
 
 	return (

@@ -40,10 +40,9 @@ const LoginForm = (props) => {
 		try {
 			const res = await axios(httpMessageConfig);
 			let username = res.data.user;
-			console.log(username);
 			authDispatch({username: username, type: "LOGIN_SUCCESS"});
-			console.log('successful login')
 			Router.push(`/users/${username}`);
+			return;
 		} catch (e) {
 
 			formik.isValid = false;
@@ -63,10 +62,10 @@ const LoginForm = (props) => {
 			const res = await axios(httpMessageConfig);
 			let username = res.data.user;
 			authDispatch({username: username, type: "LOGIN_SUCCESS"});
-			console.log('successful login')
+
 			Router.push(`/users/${username}`);
+			return;
 		} catch (e) {
-			console.log('unsuccessful login')
 			formik.isValid = false;
 		}
 	});

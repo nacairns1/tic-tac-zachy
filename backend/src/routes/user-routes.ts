@@ -6,7 +6,7 @@ import { getAllUsers, registerNewUser, getGamesByUser, loginUser } from "../cont
 
 const router = express.Router();
 
-router.get("/games", getGamesByUser);
+router.get("/games/:username", getGamesByUser);
 
 router.post("/register", registerNewUser);
 

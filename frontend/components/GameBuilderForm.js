@@ -32,7 +32,7 @@ function GameBuilderForm(props) {
 		} else {
 			setPlayer1(local_player);
 		}
-	})
+	}, [])
 
 	const createNewGameRequest = useCallback(async (data) => {
 		const httpMessageConfig = {
@@ -44,7 +44,6 @@ function GameBuilderForm(props) {
 			},
 
 		};
-		console.log(httpMessageConfig.data);
 		try {
 			const res = await axios(httpMessageConfig);
 			console.log(res);

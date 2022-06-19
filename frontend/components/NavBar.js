@@ -212,22 +212,17 @@ const NavBar = () => {
 								className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
 							>
 								<li>
-									<Link
-										href={
-											loggedInUser.loggedIn
-												? `/users/${loggedInUser.username}`
-												: "/users/login"
-										}
-									>
+									
 										<button
 											className="btn btn-ghost btn-sm"
 											onClick={() => {
 												setProfileTabOpen(false);
+												Router.push(loggedInUser.loggedIn ? {pathname: `/users/${loggedInUser.username}`} : '/users/login')
 											}}
 										>
 											{loggedInUser.loggedIn ? `Profile` : "Login / Register"}
 										</button>
-									</Link>
+	
 								</li>
 
 								{loggedInUser.loggedIn && (

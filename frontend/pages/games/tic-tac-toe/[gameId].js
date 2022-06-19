@@ -2,7 +2,6 @@ import { useTTTContext } from "../../../contexts/TTTContext";
 import Grid from "../../../components/Grid";
 import { PlayerSection } from "../../../components/PlayerSection";
 import { useEffect, useState } from "react";
-import { Router } from "next/router";
 
 const TicTacToe = (props) => {
 	const { gameState, dispatch } = useTTTContext();
@@ -15,6 +14,27 @@ const TicTacToe = (props) => {
 
 	useEffect(() => {
 		dispatch({ type: "LOAD_GAME", game: game, players: players });
+	}, []);
+
+	useEffect(() => {
+		async function fetchDataInterval(gameId) {
+			const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
+			const players_res = await fetch(
+				`http://localhost:5000/player-entries/${gameId}`
+			);
+			const players = await players_res.json();
+			const json = await res.json();
+			const { game } = json;
+
+			dispatch({type: "LOAD_GAME", game, players});
+		}
+
+		const interval = setInterval(() => {
+			fetchDataInterval(props.gameId)
+		}, 5000);
+
+		return () => clearInterval(interval);
+
 	}, []);
 
 	return (
@@ -57,11 +77,13 @@ TicTacToe.getInitialProps = async (ctx) => {
 	const { gameId } = ctx.query;
 
 	const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
-	const players_res = await fetch(`http://localhost:5000/player-entries/${gameId}`);
+	const players_res = await fetch(
+		`http://localhost:5000/player-entries/${gameId}`
+	);
 	const players = await players_res.json();
 	const json = await res.json();
 	const { game } = json;
-	return { game, players };
+	return { game, players, gameId };
 };
 
 export default TicTacToe;
