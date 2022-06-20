@@ -4,8 +4,10 @@ steps:
   entrypoint: bash
   args: ['ls && pwd']
 
-- entrypoint: bash
+- name: node 
+  entrypoint: bash
   args: ['cd ./dist && npm install']
 
-- entrypoint: node
+- name: node
+  entrypoint: node
   args: ['./backend/dist/index.js']
