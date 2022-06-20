@@ -2,7 +2,7 @@ steps:
 # Install dependencies
 - name: node
   entrypoint: bash
-  args: ['cd ./backend/dist && npm install']
+  args: ['cd ./dist && npm install']
 # Run custom commands
 - name: node
   entrypoint: node
