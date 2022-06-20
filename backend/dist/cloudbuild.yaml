@@ -1,0 +1,7 @@
+steps:
+# Install dependencies
+- name: node
+  args: ['npm install']
+# Run custom commands
+- name: node
+  args: ['npm start']
