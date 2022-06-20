@@ -1,7 +1,9 @@
 steps:
 # Install dependencies
 - name: node
-  args: ['npm install']
+  entrypoint: npm
+  args: ['install']
 # Run custom commands
 - name: node
-  args: ['npm start']
+  entrypoint: npm
+  args: ['start']
