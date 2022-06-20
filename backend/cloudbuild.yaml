@@ -1,9 +1,9 @@
 steps:
 # Install dependencies
 - name: node
-  entrypoint: ./backend/dist/
+  entrypoint: backend/dist/
   args: ['npm install']
 # Run custom commands
 - name: node
-  entrypoint: ./backend/dist
+  entrypoint: backend/dist
   args: ['npm start']
