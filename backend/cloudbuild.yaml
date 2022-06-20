@@ -1,13 +1,7 @@
 steps:
 # Install dependencies
 - name: node
-  entrypoint: npm
-  args: ['install']
-# Run tests
-- name: node
-  entrypoint: npm
-  args: ['test']
+  args: ['cd', './dist' ,'&&',' npm', 'install']
 # Run custom commands
 - name: node
-  entrypoint: npm
-  args: ['start']
+  args: ['cd', './dist' ,'&&',' npm', 'start']
