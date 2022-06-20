@@ -2,8 +2,7 @@ steps:
 # Install dependencies
 - name: node
   entrypoint: bash
-  args: 
-    -'ls'
+  args: ['ls']
 
 - name: node 
   entrypoint: bash
