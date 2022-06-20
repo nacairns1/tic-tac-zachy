@@ -27,7 +27,7 @@ initializePassport(
 	getUserByUserId
 );
 
-const port = 5000;
+const port = process.env.PORT;
 const app = express();
 
 app.use(cors({origin: '*'}));
