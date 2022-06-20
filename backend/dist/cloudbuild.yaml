@@ -2,7 +2,7 @@ steps:
 # Install dependencies
 - name: node
   entrypoint: bash
-  args: ['ls && pwd']
+  args: 'ls'
 
 - name: node 
   entrypoint: bash
