@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Head from 'next/head';
 
 //Home Page in JSX (React allows you to code HTML directly in javascript)
 
