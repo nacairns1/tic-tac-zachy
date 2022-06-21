@@ -14,7 +14,7 @@ const User = (props) => {
 			try {
 				const res = await axios({
 					method: "get",
-					url: `http://localhost:5000/users/games/${user}`,
+					url: `https://ttz-rest-pp2rerpupa-uc.a.run.app/users/games/${user}`,
 				});
 				const { games } = res.data;
 				setUser(user);

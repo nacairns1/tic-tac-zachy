@@ -33,7 +33,7 @@ const GameSection = (props) => {
 				let gameId = Router.asPath.split("/").pop();
 				const httpMessageConfig = {
 					method: "patch",
-					url: `http://localhost:5000/tic-tac-toe/${gameId}`,
+					url: `https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/${gameId}`,
 					data: {
 						activePiece: gameState.playerPiece,
 						gameState: gameState.board.board,

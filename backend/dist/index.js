@@ -18,7 +18,7 @@ const user_controller_1 = require("./controllers/user-controller");
 require("dotenv").config();
 const secret = process.env.SESSION_SECRET;
 (0, passport_config_1.initializePassport)(passport_1.default, user_controller_1.getUserByUsername, user_controller_1.getUserByUserId);
-const port = 5000;
+const port = process.env.PORT;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: '*' }));
 app.use(body_parser_1.default.json());

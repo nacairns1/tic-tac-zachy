@@ -30,7 +30,7 @@ const LoginForm = (props) => {
 	const onRegisterFormSubmit = useCallback(async (data) => {
 		const httpMessageConfig = {
 			method: "post",
-			url: "http://localhost:5000/users/register",
+			url: "https://ttz-rest-pp2rerpupa-uc.a.run.app/users/register",
 			data: {
 				username: data.username,
 				password: data.password,
@@ -52,7 +52,7 @@ const LoginForm = (props) => {
 	const onloginFormSubmit = useCallback(async (data) => {
 		const httpMessageConfig = {
 			method: "post",
-			url: "http://localhost:5000/users/login",
+			url: "https://ttz-rest-pp2rerpupa-uc.a.run.app/users/login",
 			data: {
 				username: data.username,
 				password: data.password,
