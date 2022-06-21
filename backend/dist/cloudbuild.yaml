@@ -1,12 +1,8 @@
 steps:
 # Install dependencies
-- name: node
-  entrypoint: bash
-  args: ['ls']
-
 - name: node 
-  entrypoint: bash
-  args: ['cd ./dist && npm install']
+  entrypoint: npm
+  args: ['--source=./backend/dist/']
 
 - name: node
   entrypoint: node
