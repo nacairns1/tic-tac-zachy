@@ -2,7 +2,7 @@ steps:
 # Install dependencies
 - name: node 
   entrypoint: npm
-  args: ['--source=./backend/dist/']
+  args: ['--source=./backend/dist/', 'install']
 
 - name: node
   entrypoint: node
