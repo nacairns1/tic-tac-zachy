@@ -1,11 +1,11 @@
 steps:
 # Install dependencies
 - name: npm 
-  source: /backend/dist
+  dir: /backend/dist
   entrypoint: npm
   args: ['install']
 
 - name: node
-  source: /backend/dist
+  dir: /backend/dist
   entrypoint: node
   args: ['index.js']
