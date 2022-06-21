@@ -31,7 +31,7 @@ function GameBuilderForm(props) {
 			console.log('checking queue...');
 			let httpMessageConfig = httpMessageConfig = {
 				method: "post",
-				url: "http://localhost:5000/tic-tac-toe/new_game/queue_status",
+				url: "https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/new_game/queue_status",
 				data: {
 					username: localStorage.getItem("CURRENT_USER")
 				},
@@ -63,7 +63,7 @@ function GameBuilderForm(props) {
 		async (data) => {
 			const httpMessageConfig = {
 				method: "post",
-				url: "http://localhost:5000/tic-tac-toe/new_game/invite",
+				url: "https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/new_game/invite",
 				data: {
 					player_x: chosenPlayerPiece === "X" ? localStorage.getItem("CURRENT_USER") : data.username,
 					player_o: chosenPlayerPiece === "O" ? localStorage.getItem("CURRENT_USER") : data.username,
@@ -150,7 +150,7 @@ function GameBuilderForm(props) {
 						
 						const httpMessageConfig = {
 							method: "post",
-							url: "http://localhost:5000/tic-tac-toe/new_game/random_user",
+							url: "https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/new_game/random_user",
 							data: {
 								username: localStorage.getItem("CURRENT_USER") 
 							},
@@ -175,7 +175,7 @@ function GameBuilderForm(props) {
 					onClick={async () => {
 						const httpMessageConfig = {
 							method: "post",
-							url: "http://localhost:5000/tic-tac-toe/new_game/leave_queue",
+							url: "https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/new_game/leave_queue",
 							data: {
 								username: localStorage.getItem("CURRENT_USER")
 							},

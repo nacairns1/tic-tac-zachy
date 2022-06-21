@@ -18,7 +18,7 @@ const TicTacToe = (props) => {
 
 	useEffect(() => {
 		async function fetchDataInterval(gameId) {
-			const res = await fetch(`http://localhost:5000/tic-tac-toe/${gameId}`);
+			const res = await fetch(`https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/${gameId}`);
 			const players_res = await fetch(
 				`http://localhost:5000/player-entries/${gameId}`
 			);
