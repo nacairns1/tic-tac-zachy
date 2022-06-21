@@ -1,6 +1,6 @@
 steps:
 # Install dependencies
-- name: npm 
+- name: node 
   dir: /backend/dist
   entrypoint: npm
   args: ['install']
