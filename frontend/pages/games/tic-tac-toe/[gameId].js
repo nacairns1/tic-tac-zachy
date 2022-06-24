@@ -20,7 +20,7 @@ const TicTacToe = (props) => {
 		async function fetchDataInterval(gameId) {
 			const res = await fetch(`https://ttz-rest-pp2rerpupa-uc.a.run.app/tic-tac-toe/${gameId}`);
 			const players_res = await fetch(
-				`http://localhost:5000/player-entries/${gameId}`
+				`ttps://ttz-rest-pp2rerpupa-uc.a.run.app/${gameId}`
 			);
 			const players = await players_res.json();
 			const json = await res.json();

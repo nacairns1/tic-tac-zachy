@@ -19,7 +19,9 @@ const User = (props) => {
 				const { games } = res.data;
 				setUser(user);
 				setGames(games);
-			} catch (e) {}
+			} catch (e) {
+				console.error;
+			}
 		}
 		if (Router.default.query.user != undefined) updateData(Router.default.query);
 	}, []);
